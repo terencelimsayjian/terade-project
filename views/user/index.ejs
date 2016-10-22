@@ -1,0 +1,12 @@
+<h2>All users</h2>
+
+<ul>
+  <% data.forEach(function (user) { %>
+    <li>
+      <%= 'Username: ' + user.local.username %> <br>
+      <%= 'Name: ' + user.local.name %> <br>
+      <%= 'Email: ' + user.local.email %> <br>
+      <%= 'ID: ' + user.local._id %>
+    </li>
+  <% }) %>
+</ul>

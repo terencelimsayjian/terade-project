@@ -1,0 +1,28 @@
+<h2>Stuff to do</h2>
+
+<form class="to-do-list" action="/todo" method="post">
+  <div class="row">
+    <div class="form-group col-md-8">
+      <label for="itemInput">Item:</label>
+      <input type="text" class="form-control" id="itemInput" placeholder="New thing to do!" name="todo[item]">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="dateInput">Deadline:</label>
+      <input type="date" class="form-control" id="nameInput" placeholder="dd/mm/yyyy" name="todo[deadline]">
+    </div>
+    <div class="form-group col-md-12">
+      <label for="userIdInput">User ID:</label>
+      <input type="text" class="form-control" id="userIdInput" placeholder="User ID" name="todo[user_id]">
+    </div>
+  <button type="submit" class="btn btn-default">Submit</button>
+</form>
+
+<ul>
+  <% data.forEach(function (todoItem) { %>
+    <li>
+      <%= todoItem.item %>
+      <%= todoItem.deadline %>
+      <%= todoItem.user_id %>
+    </li>
+  <% }) %>
+</ul>

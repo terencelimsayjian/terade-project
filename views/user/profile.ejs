@@ -1,0 +1,21 @@
+<h2>Profile</h2>
+
+<% if(message.length > 0) { %>
+  <h3>Flash Found</h3>
+  <div class="alert alert-danger">
+    <%= message %>
+  </div>
+<% } %>
+
+<ul id="all-user-list">
+<% allUsers.forEach(function(user) { %>
+  <li>
+      <%= user.local.name %><br>
+      <%= user.local.email %><br>
+      <%= user.local.password %>
+  </li>
+<% }) %>
+</ul>
+</form>
+
+<a href="/users/logout">Logout</a>
