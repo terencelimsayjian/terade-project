@@ -1,0 +1,26 @@
+<h2>Profile</h2>
+
+<% if(message.length > 0) { %>
+  <div class="alert alert-danger">
+    <%= message %>
+  </div>
+<% } %>
+
+</ul>
+<li>
+  Username: <%= username %>
+</li>
+<li>
+  Name: <%= name %><br>
+</li>
+<li>
+  Email: <%= email %><br>
+</li>
+<li>
+  Password: <%= password %><br>
+</li>
+<ul>
+
+<a href="/terade/listings">My Books</a>
+
+<a href="/terade/logout">Logout</a>

@@ -1,7 +1,5 @@
 var express = require('express')
 var bodyParser = require('body-parser')
-var userRoutes = require('./routes/user')
-var todoRoutes = require('./routes/todo')
 var expressLayouts = require('express-ejs-layouts')
 var path = require('path')
 var mongoose = require('mongoose')
@@ -11,6 +9,10 @@ var flash = require('connect-flash')
 var passport = require('passport')
 var MongoStore = require('connect-mongo')(session)
 var morgan = require('morgan')
+
+var teradeRoutes = require('./routes/terade')
+var userRoutes = require('./routes/user')
+// var todoRoutes = require('./routes/todo')
 
 var app = express()
 
@@ -45,7 +47,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(expressLayouts)
 
 app.use('/users', userRoutes)
-app.use('/todo', todoRoutes)
+app.use('/terade', teradeRoutes)
 
 app.listen(process.env.PORT || 3000)
 console.log('Server started')

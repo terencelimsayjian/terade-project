@@ -9,8 +9,6 @@ router.get('/', function (req, res) {
   })
 })
 
-// 580612a969378b3a5d7b54b3
-
 router.post('/', function (req, res) {
   Todo.create(req.body.todo, function (err, todoItem) {
     if (err) throw err

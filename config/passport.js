@@ -22,7 +22,7 @@ module.exports = function (passport) {
       if (err) return next(err)
 
       if (foundUser) {
-        return next(null, false, req.flash('signupMessage', 'Email has been taken'))
+        return next(null, false, req.flash('signupMessage', 'That email is unavailable'))
       } else {
         User.create(req.body.user, function (err, newUser) {
           if (err) throw err
@@ -37,21 +37,21 @@ module.exports = function (passport) {
     passwordField: 'user[local][password]',
     passReqToCallback: true
   }, function (req, email, password, next) {
-
     User.findOne({ 'local.email': email }, function (err, foundUser) {
       if (err) return next(err)
 
     // if cannot find use by email, return to route with flash message
-      if (!foundUser)
+      if (!foundUser) {
         return next(null, false, req.flash('loginMessage', 'No user found with this email'))
+      }
 
       foundUser.authenticate(password, function (err, authenticated) {
         if (err) return next(err)
 
         if (authenticated) {
-          return next(null, foundUser, req.flash('loginMessage', 'Hello logged in user ' + foundUser.local.name))
+          return next(null, foundUser, req.flash('profileMessage', 'Hello, ' + foundUser.local.name))
         } else {
-          return next(null, false, req.flash('loginMessage', 'Password don\'t match'))
+          return next(null, false, req.flash('loginMessage', 'Password incorrect'))
         }
       })
     })
