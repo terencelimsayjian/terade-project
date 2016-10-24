@@ -1,6 +1,6 @@
-<h2>My Listings</h2>
+<h2>Edit Listing</h2>
 
-<form class="new-listing" method="post">
+<form class="edit-listing" method="post" action=<%= "/listings/" + data._id + "?_method=PUT"%> >
   <div class="row">
     <div class="form-group col-md-6">
       <label for="listingNameInput">Name</label>
@@ -15,15 +15,16 @@
 </form>
 
 <ul>
-  <% data.forEach(function (listing) { %>
     <li>
-      <strong>Listing Name: </strong><%= listing.name %> <br>
-      <strong>Listing Description: </strong><%= listing.description %> <br>
-      <strong>List Date: </strong><%= listing.listdate %> <br>
-      <strong>Availibility: </strong><%= listing.availability %> <br>
-      <strong>User ID: </strong><%= listing.user_id %>
+      <strong>Listing Name: </strong><%= data.name %> <br>
+      <strong>Listing Description: </strong><%= data.description %> <br>
+      <strong>List Date: </strong><%= data.listdate %> <br>
+      <strong>Availibility: </strong><%= data.availability %> <br>
+      <strong>User ID: </strong><%= data.user_id %> <br>
+      <strong>Book ID: </strong><%= data._id %> <br>
     </li>
-  <% }) %>
 </ul>
+
+<a href="/listings">My Books</a>
 
 <a href="/terade/profile">Profile</a>

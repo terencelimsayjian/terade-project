@@ -1,0 +1,21 @@
+<h2>My Listings</h2>
+
+<ul>
+    <li>
+      <strong>Listing Name: </strong><%= data.name %> <br>
+      <strong>Listing Description: </strong><%= data.description %> <br>
+      <strong>List Date: </strong><%= data.listdate %> <br>
+      <strong>Availibility: </strong><%= data.availability %> <br>
+      <strong>User ID: </strong><%= data.user_id %> <br>
+      <strong>Book ID: </strong><%= data._id %> <br>
+      <a href= <%= "/listings/" + data._id + '/edit' %> >Edit Post</a>
+
+      <form class="btn delete" method="POST" action=<%= "/listings/" + data._id + "?_method=DELETE"%>>
+        <button type="submit" class="btn btn-default">Delete</button>
+      </form>
+    </li>
+</ul>
+
+<a href="/listings">My Books</a>
+
+<a href="/terade/profile">Profile</a>

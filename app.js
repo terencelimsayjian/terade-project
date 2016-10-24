@@ -9,10 +9,12 @@ var flash = require('connect-flash')
 var passport = require('passport')
 var MongoStore = require('connect-mongo')(session)
 var morgan = require('morgan')
+var connect = require('connect')
+var methodOverride = require('method-override')
 
 var teradeRoutes = require('./routes/terade')
+var listingRoutes = require('./routes/listing')
 var userRoutes = require('./routes/user')
-// var todoRoutes = require('./routes/todo')
 
 var app = express()
 
@@ -34,6 +36,9 @@ app.use(session({
   })
 }))
 
+// app.use(methodOverride('X-HTTP-Method-Override'))
+app.use(methodOverride('_method'))
+
 app.use(morgan('dev'))
 app.use(passport.initialize())
 app.use(passport.session())
@@ -47,6 +52,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(expressLayouts)
 
 app.use('/users', userRoutes)
+app.use('/listings', listingRoutes)
 app.use('/terade', teradeRoutes)
 
 app.listen(process.env.PORT || 3000)
