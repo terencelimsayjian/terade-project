@@ -1,0 +1,16 @@
+<h2>My Offered</h2>
+
+<ul>
+  <% data.forEach(function (trade) { %>
+    <li>
+      <strong>Trade ID: </strong><%= trade._id %> <br>
+      <strong>Proposer User ID: </strong><%= trade.proposer_user_id %> <br>
+      <strong>Proposer Listing ID: </strong><%= trade.proposer_listing_id %> <br>
+      <strong>Proposee User ID: </strong><%= trade.proposee_user_id %> <br>
+      <strong>Proposee Listing ID: </strong><%= trade.proposee_listing_id %> <br>
+      <strong>Offer Date: </strong><%= trade.listdate %> <br>
+      <strong>Status: </strong><%= trade.status %> <br>
+      <a href= <%= "/trades/" + trade._id %> >Visit Page</a>
+    </li>
+  <% }) %>
+</ul>

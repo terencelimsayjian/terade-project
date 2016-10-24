@@ -1,0 +1,17 @@
+<h2>Dis Trades</h2>
+
+<ul>
+    <li>
+      <strong>Trade ID: </strong><%= data._id %> <br>
+      <strong>Proposer User ID: </strong><%= data.proposer_user_id %> <br>
+      <strong>Proposer Listing ID: </strong><%= data.proposer_listing_id %> <br>
+      <strong>Proposee User ID: </strong><%= data.proposee_user_id %> <br>
+      <strong>Proposee Listing ID: </strong><%= data.proposee_listing_id %> <br>
+      <strong>Offer Date: </strong><%= data.listdate %> <br>
+      <strong>Status: </strong><%= data.status %> <br>
+    </li>
+
+    <form class="btn delete" method="POST" action=<%= "/trades/" + data._id + "?_method=DELETE"%>>
+      <button type="submit" class="btn btn-default">Delete</button>
+    </form>
+</ul>

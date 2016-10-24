@@ -10,18 +10,18 @@ router.get('/', function (req, res) {
 }).get('/mylistings', function (req, res) {
   Listing.find({ user_id: req.user.id }, function (err, myListings) {
     if (err) throw err
-    res.render('listings/index', { data: myListings })
+    res.render('listings/mylistings', { data: myListings })
   })
 })
 .get('/new', function (req, res) {
   res.render('listings/new')
-}).get('/:id', function (req, res) {
-  Listing.findOne({ _id: req.params.id }, function (err, foundListing) {
+}).get('/:listingID', function (req, res) {
+  Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
     if (err) throw err
     res.render('listings/listing', { data: foundListing })
   })
-}).get('/:id/edit', function (req, res) {
-  Listing.findOne({ _id: req.params.id }, function (err, foundListing) {
+}).get('/:listingID/edit', function (req, res) {
+  Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
     if (err) throw err
     res.render('listings/edit', { data: foundListing })
   })
@@ -36,13 +36,13 @@ router.post('/', function (req, res) {
     user_id: req.user.id
   })
   newListing.save()
-  res.redirect('/listings')
+  res.redirect('/listings/mylistings')
 })
 
-router.delete('/:id', function (req, res) {
-  Listing.remove({ _id: req.params.id }, function (err, result) {
+router.delete('/:listingID', function (req, res) {
+  Listing.remove({ _id: req.params.listingID }, function (err, result) {
     if (err) throw err
-    res.redirect('/listings')
+    res.redirect('/listings/mylistings')
   })
 })
 

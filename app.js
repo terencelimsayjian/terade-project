@@ -9,12 +9,12 @@ var flash = require('connect-flash')
 var passport = require('passport')
 var MongoStore = require('connect-mongo')(session)
 var morgan = require('morgan')
-var connect = require('connect')
 var methodOverride = require('method-override')
 
 var teradeRoutes = require('./routes/terade')
 var listingRoutes = require('./routes/listing')
 var userRoutes = require('./routes/user')
+var tradeRoutes = require('./routes/trades')
 
 var app = express()
 
@@ -54,6 +54,7 @@ app.use(expressLayouts)
 app.use('/users', userRoutes)
 app.use('/listings', listingRoutes)
 app.use('/terade', teradeRoutes)
+app.use('/trades', tradeRoutes)
 
 app.listen(process.env.PORT || 3000)
 console.log('Server started')

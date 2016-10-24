@@ -2,17 +2,44 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Ter-Do-List</title>
+    <title>Booker</title>
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="/css/style.css" rel="stylesheet">
 
+
   </head>
+
+
   <body class="container-fluid">
+
+    <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/listings">Booker</a>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="/listings">Browse</a></li>
+        <li><a href="/listings/mylistings">My Books</a></li>
+        <li><a href="/trades/offers">Offers</a></li>
+        <li><a href="/trades/offered">Offered</a></li>
+        <li><a href="#">Messages</a></li>
+
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="/terade/profile">Profile</a></li>
+        <li><a href="/terade/logout">Logout</a></li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
     <div class="row">
       <div class="col-md-8 col-md-offset-2 well">
-        <h1>Bookerino</h1>
         <%- body %>
       </div>
     </div>
