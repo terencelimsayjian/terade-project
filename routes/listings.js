@@ -7,7 +7,7 @@ router.get('/', function (req, res) {
   .populate('user_id', 'local.username')
   .exec(function (err, allListings) {
     if (err) throw err
-    res.render('listing/index', { data: allListings })
+    res.render('listing/index', { data: allListings, user: req.user.id })
   })
 }).get('/mylistings', function (req, res) {
   Listing.find({ user_id: req.user.id }, function (err, myListings) {

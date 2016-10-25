@@ -9,7 +9,7 @@
       <strong>Availibility: </strong><%= listing.availability %> <br>
       <strong>Username: </strong><%= listing.user_id.local.username %> <br>
       <a href= <%= "/trades/" + listing.user_id._id +  "/" + listing._id +"/selecttrade" %> >Make an offer</a>
-
+      <a href= <%= "/messages/" + listing.user_id._id +  "/" + listing._id + "/new" %> >Send Message</a>
     </li>
   <% }) %>
 </ul>
