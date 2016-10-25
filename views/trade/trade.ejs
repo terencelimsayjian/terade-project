@@ -3,10 +3,10 @@
 <ul>
     <li>
       <strong>Trade ID: </strong><%= data._id %> <br>
-      <strong>Proposer User ID: </strong><%= data.proposer_user_id %> <br>
-      <strong>Proposer Listing ID: </strong><%= data.proposer_listing_id %> <br>
-      <strong>Proposee User ID: </strong><%= data.proposee_user_id %> <br>
-      <strong>Proposee Listing ID: </strong><%= data.proposee_listing_id %> <br>
+      <strong>Proposer User ID: </strong><%= data.proposer_user_id.local.username %> <br>
+      <strong>Proposer Listing ID: </strong><%= data.proposer_listing_id.name %> <br>
+      <strong>Proposee User ID: </strong><%= data.proposee_user_id.local.username %> <br>
+      <strong>Proposee Listing ID: </strong><%= data.proposee_listing_id.name %> <br>
       <strong>Offer Date: </strong><%= data.listdate %> <br>
       <strong>Status: </strong><%= data.status %> <br>
     </li>

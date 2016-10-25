@@ -1,6 +1,6 @@
-<h2>Chat Messages</h2>
+<h2>Messages</h2>
 
-<form class="new-message" method="post" action=<%= "/chats/mychats/" + chat._id %> >
+<form class="new-message" method="post" action=<%= "/chats/mychats/" + chatID %> >
 
   <div class="row">
     <div class="form-group col-md-12">
@@ -11,13 +11,11 @@
   <button type="submit" class="btn btn-default">Submit</button>
   </form>
 
-  <%= chat %>
-
   <ul>
+    <% chatMessages.forEach(function (message) { %>
       <li>
-        <strong>Message ID: </strong><%= chat._id %> <br>
-        <strong>Message: </strong><%= chat.message %> <br>
-        <strong>Message Date: </strong><%= chat.chatbox_id %> <br>
-        <strong>Proposer UserID: </strong><%= chat.messagedate %> <br>
+        <strong><%= message.user_id.local.username %>: </strong><%= message.message %> <br>
+        (Sent: <%= message.messagedate %>)
       </li>
+    <% }) %>
   </ul>

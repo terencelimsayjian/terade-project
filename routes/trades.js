@@ -42,10 +42,15 @@ router.get('/:userID/:listingID/selecttrade', function (req, res) {
 })
 
 router.get('/:tradeID', function (req, res) {
-  Trade.findOne({ _id: req.params.tradeID }, function (err, thisTrade) {
-    if (err) throw err
-    res.render('trade/trade', { data: thisTrade })
-  })
+  Trade.findOne({ _id: req.params.tradeID })
+    .populate('proposer_user_id', 'local.username')
+    .populate('proposer_listing_id', 'name')
+    .populate('proposee_user_id', 'local.username')
+    .populate('proposee_listing_id', 'name')
+    .exec(function (err, thisTrade) {
+      if (err) throw err
+      res.render('trade/trade', { data: thisTrade })
+    })
 })
 
 router.post('/', function (req, res) {
@@ -58,7 +63,7 @@ router.post('/', function (req, res) {
     status: 'Pending'
   })
   newTrade.save()
-  res.redirect('/trades')
+  res.redirect('/trades/offered')
 })
 
 router.put('/:tradeID/reject', function (req, res) {

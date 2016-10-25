@@ -5,9 +5,13 @@ var messageSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  chatbox_id: {
+  chat_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Chat'
+  },
+  user_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   messagedate: Date
 })

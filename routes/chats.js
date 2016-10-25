@@ -14,19 +14,23 @@ router.get('/', function (req, res) {
 
 router.get('/mychats', function (req, res) {
   Chat.find({ $or: [ { proposer_user_id: req.user.id }, { proposee_user_id: req.user.id } ]})
-    .populate('user_id', 'local.username')
+    .populate('proposer_user_id', 'local.username')
+    .populate('proposee_user_id', 'local.username')
+    .populate('listing_id', 'name')
     .exec(function (err, userChats) {
+      console.log(userChats)
       if (err) throw err
       res.render('chat/mychats', { userChats: userChats })
     })
 })
 
 router.get('/mychats/:chatID', function (req, res) {
-  Chat.findOne({ _id: req.params.chatID })
+  Message.find({ chat_id: req.params.chatID })
   .populate('user_id', 'local.username')
-  .exec(function (err, chat) {
+  .exec(function (err, chatMessages) {
+    console.log(chatMessages)
     if (err) throw err
-    res.render('chat/messages', { chat: chat })
+    res.render('chat/messages', { chatMessages: chatMessages, chatID: req.params.chatID })
   })
 })
 
@@ -53,7 +57,8 @@ router.post('/', function (req, res) {
   })
   var newMessage = new Message({
     message: req.body.message,
-    chatbox_id: newChat._id,
+    chat_id: newChat._id,
+    user_id: req.user._id,
     messagedate: Date.now()
   })
 
@@ -62,13 +67,14 @@ router.post('/', function (req, res) {
 
   newChat.save()
 
-  res.redirect('/chats')
+  res.redirect('/chats/myChats/' + newChat._id)
 })
 
 router.post('/mychats/:chatID', function (req, res) {
   var newMessage = new Message({
     message: req.body.message,
-    chatbox_id: req.params.chatID,
+    chat_id: req.params.chatID,
+    user_id: req.user._id,
     messagedate: Date.now()
   })
   newMessage.save()
