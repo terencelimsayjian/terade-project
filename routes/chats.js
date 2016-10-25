@@ -13,9 +13,20 @@ router.get('/', function (req, res) {
 })
 
 router.get('/mychats', function (req, res) {
-  Chat.find({ $or: [ { proposer_user_id: req.user.id }, { proposee_user_id: req.user.id } ]}, function (err, userChats) {
+  Chat.find({ $or: [ { proposer_user_id: req.user.id }, { proposee_user_id: req.user.id } ]})
+    .populate('user_id', 'local.username')
+    .exec(function (err, userChats) {
+      if (err) throw err
+      res.render('chat/mychats', { userChats: userChats })
+    })
+})
+
+router.get('/mychats/:chatID', function (req, res) {
+  Chat.findOne({ _id: req.params.chatID })
+  .populate('user_id', 'local.username')
+  .exec(function (err, chat) {
     if (err) throw err
-    res.render('chat/message', { userChats: userChats })
+    res.render('chat/messages', { chat: chat })
   })
 })
 
@@ -52,6 +63,20 @@ router.post('/', function (req, res) {
   newChat.save()
 
   res.redirect('/chats')
+})
+
+router.post('/mychats/:chatID', function (req, res) {
+  var newMessage = new Message({
+    message: req.body.message,
+    chatbox_id: req.params.chatID,
+    messagedate: Date.now()
+  })
+  newMessage.save()
+  Chat.findOne({ _id: req.params.chatID }, function (err, foundChat) {
+    if (err) throw err
+    foundChat.messages.push(newMessage._id)
+  })
+  res.redirect('/chats/mychats/' + req.params.chatID)
 })
 
 module.exports = router
