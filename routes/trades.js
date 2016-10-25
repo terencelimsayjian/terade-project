@@ -11,24 +11,26 @@ router.get('/', function (req, res) {
 })
 
 router.get('/offers', function (req, res) {
-  console.log(req.user.id)
-  Trade.find({ proposee_user_id: req.user.id }, function (err, myOffers) {
+  Trade.find({ proposee_user_id: req.user.id })
+  .populate('proposer_user_id', 'local.username')
+  .populate('proposer_listing_id', 'name')
+  .populate('proposee_user_id', 'local.username')
+  .populate('proposee_listing_id', 'name')
+  .exec(function (err, myOffers) {
     if (err) throw err
     res.render('trade/offers', { data: myOffers })
   })
 })
 
 router.get('/offered', function (req, res) {
-  Trade.find({ proposer_user_id: req.user.id }, function (err, myOffered) {
+  Trade.find({ proposer_user_id: req.user.id })
+  .populate('proposer_user_id', 'local.username')
+  .populate('proposer_listing_id', 'name')
+  .populate('proposee_user_id', 'local.username')
+  .populate('proposee_listing_id', 'name')
+  .exec(function (err, myOffered) {
     if (err) throw err
     res.render('trade/offered', { data: myOffered })
-  })
-})
-
-router.get('/:tradeID', function (req, res) {
-  Trade.findOne({ _id: req.params.tradeID }, function (err, thisTrade) {
-    if (err) throw err
-    res.render('trade/trade', { data: thisTrade })
   })
 })
 
@@ -36,6 +38,13 @@ router.get('/:userID/:listingID/selecttrade', function (req, res) {
   Listing.find({ user_id: req.user.id }, function (err, myListings) {
     if (err) throw err
     res.render('trade/selecttrade.ejs', { data: myListings, userID: req.params.userID, listingID: req.params.listingID })
+  })
+})
+
+router.get('/:tradeID', function (req, res) {
+  Trade.findOne({ _id: req.params.tradeID }, function (err, thisTrade) {
+    if (err) throw err
+    res.render('trade/trade', { data: thisTrade })
   })
 })
 
@@ -52,10 +61,37 @@ router.post('/', function (req, res) {
   res.redirect('/trades')
 })
 
-router.delete('/:tradeID', function (req, res) {
-  Trade.remove({ _id: req.params.tradeID }, function (err, result) {
+router.put('/:tradeID/reject', function (req, res) {
+  Trade.findOne({ _id: req.params.tradeID }, function (err, trade) {
     if (err) throw err
-    res.redirect('/trades')
+    trade.status = 'Rejected'
+    trade.save()
+    res.redirect('/trades/offered')
+  })
+})
+
+router.put('/:tradeID/accept', function (req, res) {
+  Trade.findOne({ _id: req.params.tradeID }, function (err, trade) {
+    if (err) throw err
+    trade.status = 'Accepted'
+    trade.save()
+    res.redirect('/trades/offered')
+  })
+})
+
+router.put('/:tradeID/pending', function (req, res) {
+  Trade.findOne({ _id: req.params.tradeID }, function (err, trade) {
+    if (err) throw err
+    trade.status = 'Pending'
+    trade.save()
+    res.redirect('/trades/offered')
+  })
+})
+
+router.delete('/:tradeID', function (req, res) {
+  Trade.remove({ _id: req.params.tradeID }, function (err, trade) {
+    if (err) throw err
+    res.redirect('/trades/offered')
   })
 })
 

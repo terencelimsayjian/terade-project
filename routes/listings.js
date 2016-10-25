@@ -3,27 +3,29 @@ var router = express.Router()
 var Listing = require('../models/listing')
 
 router.get('/', function (req, res) {
-  Listing.find({}, function (err, allListings) {
+  Listing.find({ availability: true })
+  .populate('user_id', 'local.username')
+  .exec(function (err, allListings) {
     if (err) throw err
-    res.render('listings/index', { data: allListings })
+    res.render('listing/index', { data: allListings })
   })
 }).get('/mylistings', function (req, res) {
   Listing.find({ user_id: req.user.id }, function (err, myListings) {
     if (err) throw err
-    res.render('listings/mylistings', { data: myListings })
+    res.render('listing/mylistings', { data: myListings })
   })
 })
 .get('/new', function (req, res) {
-  res.render('listings/new')
+  res.render('listing/new')
 }).get('/:listingID', function (req, res) {
   Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
     if (err) throw err
-    res.render('listings/listing', { data: foundListing })
+    res.render('listing/listing', { data: foundListing })
   })
 }).get('/:listingID/edit', function (req, res) {
   Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
     if (err) throw err
-    res.render('listings/edit', { data: foundListing })
+    res.render('listing/edit', { data: foundListing })
   })
 })
 
@@ -37,6 +39,24 @@ router.post('/', function (req, res) {
   })
   newListing.save()
   res.redirect('/listings/mylistings')
+})
+
+router.put('/:listingID/available', function (req, res) {
+  Listing.findOne({ _id: req.params.listingID }, function (err, listing) {
+    if (err) throw err
+    listing.availability = true
+    listing.save()
+    res.redirect('/listings/mylistings')
+  })
+})
+
+router.put('/:listingID/unavailable', function (req, res) {
+  Listing.findOne({ _id: req.params.listingID }, function (err, listing) {
+    if (err) throw err
+    listing.availability = false
+    listing.save()
+    res.redirect('/listings/mylistings')
+  })
 })
 
 router.delete('/:listingID', function (req, res) {

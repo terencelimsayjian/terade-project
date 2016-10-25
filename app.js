@@ -12,9 +12,10 @@ var morgan = require('morgan')
 var methodOverride = require('method-override')
 
 var teradeRoutes = require('./routes/terade')
-var listingRoutes = require('./routes/listing')
-var userRoutes = require('./routes/user')
+var listingRoutes = require('./routes/listings')
+var userRoutes = require('./routes/users')
 var tradeRoutes = require('./routes/trades')
+var messageRoutes = require('./routes/messages')
 
 var app = express()
 
@@ -55,6 +56,7 @@ app.use('/users', userRoutes)
 app.use('/listings', listingRoutes)
 app.use('/terade', teradeRoutes)
 app.use('/trades', tradeRoutes)
+app.use('/messages', messageRoutes)
 
 app.listen(process.env.PORT || 3000)
 console.log('Server started')
