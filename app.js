@@ -15,7 +15,8 @@ var teradeRoutes = require('./routes/terade')
 var listingRoutes = require('./routes/listings')
 var userRoutes = require('./routes/users')
 var tradeRoutes = require('./routes/trades')
-var messageRoutes = require('./routes/messages')
+// var messageRoutes = require('./routes/messages')
+var chatRoutes = require('./routes/chats')
 
 var app = express()
 
@@ -37,7 +38,6 @@ app.use(session({
   })
 }))
 
-// app.use(methodOverride('X-HTTP-Method-Override'))
 app.use(methodOverride('_method'))
 
 app.use(morgan('dev'))
@@ -56,7 +56,8 @@ app.use('/users', userRoutes)
 app.use('/listings', listingRoutes)
 app.use('/terade', teradeRoutes)
 app.use('/trades', tradeRoutes)
-app.use('/messages', messageRoutes)
+// app.use('/messages', messageRoutes)
+app.use('/chats', chatRoutes)
 
 app.listen(process.env.PORT || 3000)
 console.log('Server started')

@@ -3,18 +3,19 @@ var router = express.Router()
 var Message = require('../models/message')
 var Listing = require('../models/listing')
 var User = require('../models/user')
+var Chat = require('../models/chat')
 
 router.get('/', function (req, res) {
-  Message.find({}, function (err, userMessages) {
+  Chat.find({}, function (err, userMessages) {
     if (err) throw err
-    res.render('message/index', { userMessages: userMessages })
+    res.render('chat/index', { userMessages: userMessages })
   })
 })
 
-router.get('/mymessages', function (req, res) {
-  Message.find({ proposer_user_id: req.user.id }, function (err, userMessages) {
+router.get('/mychats', function (req, res) {
+  Chat.find({ $or: [ { proposer_user_id: req.user.id }, { proposee_user_id: req.user.id } ]}, function (err, userChats) {
     if (err) throw err
-    res.render('message/message', { userMessages: userMessages })
+    res.render('chat/message', { userChats: userChats })
   })
 })
 
@@ -27,21 +28,30 @@ router.get('/:ownerID/:listingID/new', function (req, res) {
     .populate('_id', 'name')
     .exec(function (err, listing) {
       if (err) throw err
-      res.render('message/create', { ownerUser: ownerUser, listing: listing, user: req.user })
+      res.render('chat/create', { ownerUser: ownerUser, listing: listing, user: req.user })
     })
   })
 })
 
 router.post('/', function (req, res) {
-  var newMessage = new Message({
-    message: req.body.message,
-    messagedate: Date.now(),
+  var newChat = new Chat({
     proposer_user_id: req.user._id,
     proposee_user_id: req.body.ownerUserID,
-    listing_id: req.body.listingID
+    listing_id: req.body.listingID,
+    messages: []
   })
+  var newMessage = new Message({
+    message: req.body.message,
+    chatbox_id: newChat._id,
+    messagedate: Date.now()
+  })
+
   newMessage.save()
-  res.redirect('/messages')
+  newChat.messages.push(newMessage._id)
+
+  newChat.save()
+
+  res.redirect('/chats')
 })
 
 module.exports = router
