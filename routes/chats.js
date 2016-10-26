@@ -18,7 +18,6 @@ router.get('/mychats', function (req, res) {
     .populate('proposee_user_id', 'local.username')
     .populate('listing_id', 'name')
     .exec(function (err, userChats) {
-      console.log(userChats)
       if (err) throw err
       res.render('chat/mychats', { userChats: userChats })
     })
@@ -28,9 +27,15 @@ router.get('/mychats/:chatID', function (req, res) {
   Message.find({ chat_id: req.params.chatID })
   .populate('user_id', 'local.username')
   .exec(function (err, chatMessages) {
-    console.log(chatMessages)
     if (err) throw err
-    res.render('chat/messages', { chatMessages: chatMessages, chatID: req.params.chatID })
+    Chat.findOne({ _id: req.params.chatID })
+    .populate('proposer_user_id', 'local.username')
+    .populate('proposee_user_id', 'local.username')
+    .populate('listing_id', 'name')
+    .exec(function (err, chat) {
+      if (err) throw err
+      res.render('chat/messages', { chatMessages: chatMessages, chatID: req.params.chatID, chat: chat })
+    })
   })
 })
 
@@ -67,7 +72,7 @@ router.post('/', function (req, res) {
 
   newChat.save()
 
-  res.redirect('/chats/myChats/' + newChat._id)
+  res.redirect('/chats/mychats/' + newChat._id)
 })
 
 router.post('/mychats/:chatID', function (req, res) {

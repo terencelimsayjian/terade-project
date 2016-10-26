@@ -2,6 +2,8 @@ var express = require('express')
 var router = express.Router()
 var Trade = require('../models/trade')
 var Listing = require('../models/listing')
+var Chat = require('../models/chat')
+var Message = require('../models/message')
 
 router.get('/', function (req, res) {
   Trade.find({}, function (err, allTrades) {
@@ -18,7 +20,7 @@ router.get('/offers', function (req, res) {
   .populate('proposee_listing_id', 'name')
   .exec(function (err, myOffers) {
     if (err) throw err
-    res.render('trade/offers', { data: myOffers })
+    res.render('trade/receivedoffers', { data: myOffers })
   })
 })
 
@@ -30,7 +32,7 @@ router.get('/offered', function (req, res) {
   .populate('proposee_listing_id', 'name')
   .exec(function (err, myOffered) {
     if (err) throw err
-    res.render('trade/offered', { data: myOffered })
+    res.render('trade/madeoffers', { data: myOffered })
   })
 })
 
@@ -53,9 +55,41 @@ router.get('/:tradeID', function (req, res) {
     })
 })
 
+router.get('/offers/:tradeID', function (req, res) {
+  Trade.findOne({ _id: req.params.tradeID })
+    .populate('proposer_user_id', 'local.username')
+    .populate('proposer_listing_id', 'name')
+    .populate('proposee_user_id', 'local.username')
+    .populate('proposee_listing_id', 'name')
+    .exec(function (err, thisTrade) {
+      if (err) throw err
+      res.render('trade/madeoffer', { data: thisTrade })
+    })
+})
+
+router.get('/offered/:tradeID', function (req, res) {
+  Trade.findOne({ _id: req.params.tradeID })
+    .populate('proposer_user_id', 'local.username')
+    .populate('proposer_listing_id', 'name')
+    .populate('proposee_user_id', 'local.username')
+    .populate('proposee_listing_id', 'name')
+    .exec(function (err, thisTrade) {
+      if (err) throw err
+      Chat.findOne({
+        proposer_user_id: thisTrade.proposer_user_id,
+        proposee_user_id: thisTrade.proposee_user_id,
+        listing_id: thisTrade.proposee_listing_id
+      }, function (err, thisChat) {
+        if (err) throw err
+        console.log(thisChat)
+        res.render('trade/receivedoffer', { data: thisTrade })
+      })
+    })
+})
+
 router.post('/', function (req, res) {
   var newTrade = new Trade({
-    proposer_user_id: req.user.id,
+    proposer_user_id: req.user._id,
     proposer_listing_id: req.body.proposerListingID,
     proposee_user_id: req.body.proposeeUserID,
     proposee_listing_id: req.body.proposeeListingID,
@@ -63,7 +97,35 @@ router.post('/', function (req, res) {
     status: 'Pending'
   })
   newTrade.save()
-  res.redirect('/trades/offered')
+
+  var newChat = new Chat({
+    proposer_user_id: req.user._id,
+    proposee_user_id: req.body.proposeeUserID,
+    listing_id: req.body.proposeeListingID,
+    messages: []
+  })
+
+  Listing.findOne({ _id: newTrade.proposer_listing_id })
+  .populate('user_id', 'username')
+  .exec(function (err, proposerListing) {
+    Listing.findOne({ _id: newTrade.proposee_listing_id })
+    .populate('user_id', 'username')
+    .exec(function (err, proposeeListing) {
+      if (err) throw err
+      var newMessage = new Message({
+        message: 'Hi, I would to trade your ' + proposerListing.name + ' for my ' + proposeeListing.name,
+        chat_id: newChat._id,
+        user_id: req.user._id,
+        messagedate: Date.now()
+      })
+
+      newMessage.save()
+      newChat.messages.push(newMessage._id)
+      newChat.save()
+
+      res.redirect('/chats/mychats/' + newChat._id)
+    })
+  })
 })
 
 router.put('/:tradeID/reject', function (req, res) {

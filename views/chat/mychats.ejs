@@ -3,10 +3,9 @@
 <ul>
   <% userChats.forEach(function (chat) { %>
     <li>
-      <strong>Chat ID: </strong><%= chat._id %> <br>
-      <strong>Proposer UserID: </strong><%= chat.proposer_user_id.local.username %> <br>
-      <strong>Proposee UserID: </strong><%= chat.proposee_user_id.local.username %> <br>
-      <strong>Listing ID: </strong><%= chat.listing_id.name %> <br>
+      <strong>Proposer: </strong><%= chat.proposer_user_id.local.username %> <br>
+      <strong>Proposee: </strong><%= chat.proposee_user_id.local.username %> <br>
+      <strong>Listing: </strong><%= chat.listing_id.name %> <br>
       <a href= <%= "/chats/mychats/" + chat._id %> >View Messages</a>
     </li>
   <% }) %>

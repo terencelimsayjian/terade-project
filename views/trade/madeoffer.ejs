@@ -1,0 +1,31 @@
+<h2>You were offered <%= data.proposer_listing_id.name %></h2>
+<h3>from: <%= data.proposer_user_id.local.username %></h3>
+
+<ul>
+    <li>
+      <strong>Trade ID: </strong><%= data._id %> <br>
+      <strong>Proposer User ID: </strong><%= data.proposer_user_id.local.username %> <br>
+      <strong>Proposer Listing ID: </strong><%= data.proposer_listing_id.name %> <br>
+      <strong>Proposee User ID: </strong><%= data.proposee_user_id.local.username %> <br>
+      <strong>Proposee Listing ID: </strong><%= data.proposee_listing_id.name %> <br>
+      <strong>Offer Date: </strong><%= data.listdate %> <br>
+      <strong>Status: </strong><%= data.status %> <br>
+    </li>
+
+    <form class="btn" method="POST" action=<%= "/trades/" + data._id + "/accept" + "?_method=PUT"%>>
+      <button type="submit" class="btn" type="button" name="button">Accept</button>
+    </form>
+
+    <form class="btn" method="POST" action=<%= "/trades/" + data._id + "/reject" + "?_method=PUT" %>>
+      <button type="submit" class="btn" type="button" name="button">Reject</button>
+    </form>
+
+    <form class="btn" method="POST" action=<%= "/trades/" + data._id + "/pending" + "?_method=PUT" %>>
+      <button type="submit" class="btn" type="button" name="button">Pending</button>
+    </form>
+
+    <form class="btn" method="POST" action=<%= "/trades/" + data._id + "?_method=DELETE"%>>
+      <button type="submit" class="btn btn-default">Delete</button>
+    </form>
+
+</ul>

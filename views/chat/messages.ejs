@@ -1,10 +1,11 @@
-<h2>Messages</h2>
+<h2>Chat regarding <%= chat.proposee_user_id.local.username %>'s <%= chat.listing_id.name %></h2>
+<h3>Chat between <%= chat.proposer_user_id.local.username %> and <%= chat.proposee_user_id.local.username %></h3>
 
 <form class="new-message" method="post" action=<%= "/chats/mychats/" + chatID %> >
 
   <div class="row">
     <div class="form-group col-md-12">
-      <label for="messageInput">Message</label>
+      <label for="messageInput">Send New Message</label>
       <input type="text" class="form-control" id="messageInput" placeholder="Write Message Here" name="message">
     </div>
   </div>

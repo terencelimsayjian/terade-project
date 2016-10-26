@@ -1,4 +1,5 @@
-<h2>My Offered</h2>
+<h2>You Offered</h2>
+
 
 <ul>
   <% data.forEach(function (trade) { %>
@@ -10,7 +11,7 @@
     <strong>Proposee Listing Name: </strong><%= trade.proposee_listing_id.name %> <br>
     <strong>Offer Date: </strong><%= trade.listdate %> <br>
     <strong>Status: </strong><%= trade.status %> <br>
-    <a href= <%= "/trades/" + trade._id %> >Visit Page</a>
+    <a href= <%= "/trades/offered/" + trade._id %> >Visit Page</a>
 
     </li>
   <% }) %>
