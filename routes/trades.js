@@ -98,32 +98,50 @@ router.post('/', function (req, res) {
   })
   newTrade.save()
 
-  var newChat = new Chat({
-    proposer_user_id: req.user._id,
-    proposee_user_id: req.body.proposeeUserID,
-    listing_id: req.body.proposeeListingID,
-    messages: []
-  })
+  Chat.findOne({
+    proposer_user_id: newTrade.proposer_user_id,
+    proposee_user_id: newTrade.proposee_user_id,
+    listing_id: newTrade.proposee_listing_id
+  }, function (err, thisChat) {
+    if (err) throw err
 
-  Listing.findOne({ _id: newTrade.proposer_listing_id })
-  .populate('user_id', 'username')
-  .exec(function (err, proposerListing) {
-    Listing.findOne({ _id: newTrade.proposee_listing_id })
+    Listing.findOne({ _id: newTrade.proposer_listing_id })
     .populate('user_id', 'username')
-    .exec(function (err, proposeeListing) {
-      if (err) throw err
-      var newMessage = new Message({
-        message: 'Hi, I would to trade your ' + proposerListing.name + ' for my ' + proposeeListing.name,
-        chat_id: newChat._id,
-        user_id: req.user._id,
-        messagedate: Date.now()
+    .exec(function (err, proposerListing) {
+      Listing.findOne({ _id: newTrade.proposee_listing_id })
+      .populate('user_id', 'username')
+      .exec(function (err, proposeeListing) {
+        if (err) throw err
+
+        var newMessage = new Message({
+          message: 'Hi, I would like to trade my ' + proposerListing.name + ' for your ' + proposeeListing.name,
+          chat_id: '',
+          user_id: req.user._id,
+          messagedate: Date.now()
+        })
+        if (thisChat) {
+          newMessage.chat_id = thisChat._id
+
+          newMessage.save()
+          thisChat.messages.push(newMessage._id)
+          thisChat.save()
+          res.redirect('/chats/mychats/' + thisChat._id)
+        } else {
+          var newChat = new Chat({
+            proposer_user_id: req.user._id,
+            proposee_user_id: req.body.proposeeUserID,
+            listing_id: req.body.proposeeListingID,
+            messages: []
+          })
+
+          newMessage.chat_id = newChat._id
+
+          newMessage.save()
+          newChat.messages.push(newMessage._id)
+          newChat.save()
+          res.redirect('/chats/mychats/' + newChat._id)
+        }
       })
-
-      newMessage.save()
-      newChat.messages.push(newMessage._id)
-      newChat.save()
-
-      res.redirect('/chats/mychats/' + newChat._id)
     })
   })
 })

@@ -3,7 +3,6 @@
 <ul>
   <% data.forEach(function (trade) { %>
     <li>
-      <strong>Trade ID: </strong><%= trade._id %> <br>
       <strong>Proposer Username: </strong><%= trade.proposer_user_id.local.username %> <br>
       <strong>Proposer Listing Name: </strong><%= trade.proposer_listing_id.name %> <br>
       <strong>Proposee Username: </strong><%= trade.proposee_user_id.local.username %> <br>
