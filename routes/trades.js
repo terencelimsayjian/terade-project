@@ -63,7 +63,14 @@ router.get('/offers/:tradeID', function (req, res) {
     .populate('proposee_listing_id', 'name')
     .exec(function (err, thisTrade) {
       if (err) throw err
-      res.render('trade/madeoffer', { data: thisTrade })
+      Chat.findOne({
+        proposer_user_id: thisTrade.proposer_user_id,
+        proposee_user_id: thisTrade.proposee_user_id,
+        listing_id: thisTrade.proposee_listing_id
+      }, function (err, thisChat) {
+        if (err) throw err
+        res.render('trade/madeoffer', { thisTrade: thisTrade, thisChat: thisChat })
+      })
     })
 })
 
@@ -82,7 +89,7 @@ router.get('/offered/:tradeID', function (req, res) {
       }, function (err, thisChat) {
         if (err) throw err
         console.log(thisChat)
-        res.render('trade/receivedoffer', { data: thisTrade })
+        res.render('trade/receivedoffer', { thisTrade: thisTrade, thisChat: thisChat })
       })
     })
 })
