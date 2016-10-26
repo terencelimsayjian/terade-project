@@ -8,11 +8,15 @@ var User = require('../models/user')
 
 function authCheck (req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect('/terade/profile')
+    return res.redirect('/profile')
   } else {
     return next()
   }
 }
+
+router.get('/', function(req, res) {
+  res.redirect('/listings')
+})
 
 router.route('/signup')
       .get(authCheck, function (req, res) {
@@ -24,8 +28,8 @@ router.route('/signup')
         })
       })
       .post(passport.authenticate('local-signup', {
-        successRedirect: '/terade/profile',
-        failureRedirect: '/terade/signup',
+        successRedirect: '/profile',
+        failureRedirect: '/signup',
         failureFlash: true
       }))
 
@@ -39,15 +43,15 @@ router.route('/login')
         })
       })
       .post(passport.authenticate('local-login', {
-        successRedirect: '/terade/profile',
-        failureRedirect: '/terade/login',
+        successRedirect: '/profile',
+        failureRedirect: '/login',
         failureFlash: true
       }))
 
 router.get('/logout', function (req, res) {
   req.logout()
   req.flash('loginMessage', 'Logged out successfully')
-  res.redirect('/terade/login')
+  res.redirect('/login')
 })
 
 router.get('/profile', function (req, res) {

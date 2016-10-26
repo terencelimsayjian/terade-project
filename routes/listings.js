@@ -7,10 +7,10 @@ router.get('/', function (req, res) {
   .populate('user_id', 'local.username')
   .exec(function (err, allListings) {
     if (err) throw err
-    res.render('listing/index', { data: allListings, user: req.user.id })
+    res.render('listing/index', { data: allListings, user: req.user._id })
   })
 }).get('/mylistings', function (req, res) {
-  Listing.find({ user_id: req.user.id }, function (err, myListings) {
+  Listing.find({ user_id: req.user._id }, function (err, myListings) {
     if (err) throw err
     res.render('listing/mylistings', { data: myListings })
   })
@@ -35,7 +35,7 @@ router.post('/', function (req, res) {
     description: req.body.listing.description,
     listdate: Date.now(),
     availability: true,
-    user_id: req.user.id
+    user_id: req.user._id
   })
   newListing.save()
   res.redirect('/listings/mylistings')

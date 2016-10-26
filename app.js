@@ -53,7 +53,7 @@ app.use(expressLayouts)
 
 app.use('/users', userRoutes)
 app.use('/listings', listingRoutes)
-app.use('/terade', teradeRoutes)
+app.use('/', teradeRoutes)
 app.use('/trades', tradeRoutes)
 app.use('/chats', chatRoutes)
 
