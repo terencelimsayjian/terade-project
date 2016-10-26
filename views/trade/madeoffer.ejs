@@ -1,5 +1,5 @@
-<h2>You were offered <%= thisTrade.proposer_listing_id.name %></h2>
-<h3>from: <%= thisTrade.proposer_user_id.local.username %></h3>
+<h2>You offered: <%= thisTrade.proposer_listing_id.name %></h2>
+<h3>for <%= thisTrade.proposee_user_id.local.username %>'s <%= thisTrade.proposee_listing_id.name %></h3>
 
 <ul>
     <li>
@@ -14,20 +14,8 @@
 
     <a href=<%= "/chats/mychats/" + thisChat._id %>>View Chat</a>
 
-    <form class="btn" method="POST" action=<%= "/trades/" + thisTrade._id + "/accept" + "?_method=PUT"%>>
-      <button type="submit" class="btn" type="button" name="button">Accept</button>
-    </form>
-
-    <form class="btn" method="POST" action=<%= "/trades/" + thisTrade._id + "/reject" + "?_method=PUT" %>>
-      <button type="submit" class="btn" type="button" name="button">Reject</button>
-    </form>
-
-    <form class="btn" method="POST" action=<%= "/trades/" + thisTrade._id + "/pending" + "?_method=PUT" %>>
-      <button type="submit" class="btn" type="button" name="button">Pending</button>
-    </form>
-
-    <form class="btn" method="POST" action=<%= "/trades/" + thisTrade._id + "?_method=DELETE"%>>
-      <button type="submit" class="btn btn-default">Delete</button>
+    <form class="btn" method="POST" action=<%= "/trades/offered/" + thisTrade._id %>>
+      <button type="submit" class="btn btn-default">Remove Offer</button>
     </form>
 
 </ul>

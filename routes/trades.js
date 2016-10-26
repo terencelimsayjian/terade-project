@@ -69,7 +69,7 @@ router.get('/offers/:tradeID', function (req, res) {
         listing_id: thisTrade.proposee_listing_id
       }, function (err, thisChat) {
         if (err) throw err
-        res.render('trade/madeoffer', { thisTrade: thisTrade, thisChat: thisChat })
+        res.render('trade/receivedoffer', { thisTrade: thisTrade, thisChat: thisChat })
       })
     })
 })
@@ -88,8 +88,7 @@ router.get('/offered/:tradeID', function (req, res) {
         listing_id: thisTrade.proposee_listing_id
       }, function (err, thisChat) {
         if (err) throw err
-        console.log(thisChat)
-        res.render('trade/receivedoffer', { thisTrade: thisTrade, thisChat: thisChat })
+        res.render('trade/madeoffer', { thisTrade: thisTrade, thisChat: thisChat })
       })
     })
 })
@@ -180,11 +179,41 @@ router.put('/:tradeID/pending', function (req, res) {
   })
 })
 
-router.delete('/:tradeID', function (req, res) {
-  Trade.remove({ _id: req.params.tradeID }, function (err, trade) {
+router.post('/offered/:tradeID', function (req, res) {
+  Trade.findOne({ _id: req.params.tradeID }, function (err, foundTrade) {
     if (err) throw err
-    res.redirect('/trades/offered')
+    Chat.findOne({
+      proposer_user_id: foundTrade.proposer_user_id,
+      proposee_user_id: foundTrade.proposee_user_id,
+      listing_id: foundTrade.proposee_listing_id
+    }, function (err, thisChat) {
+      if (err) throw err
+
+      Listing.findOne({ _id: foundTrade.proposer_listing_id })
+      .populate('user_id', 'username')
+      .exec(function (err, proposerListing) {
+        Listing.findOne({ _id: foundTrade.proposee_listing_id })
+        .populate('user_id', 'username')
+        .exec(function (err, proposeeListing) {
+          if (err) throw err
+
+          var newMessage = new Message({
+            message: req.user.local.username + ' has removed the offer of ' + proposerListing.name,
+            chat_id: thisChat._id,
+            user_id: req.user._id,
+            messagedate: Date.now()
+          })
+          newMessage.save()
+
+          Trade.remove({ _id: req.params.tradeID }, function (err, trade) {
+            if (err) throw err
+            res.redirect('/trades/offered')
+          })
+        })
+      })
+    })
   })
+
 })
 
 module.exports = router
