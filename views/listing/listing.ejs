@@ -6,9 +6,11 @@
       <strong>Listing Description: </strong><%= data.description %> <br>
       <strong>List Date: </strong><%= data.listdate %> <br>
       <strong>Availibility: </strong><%= data.availability %> <br>
-      <strong>User ID: </strong><%= data.user_id %> <br>
-      <strong>Book ID: </strong><%= data._id %> <br>
+
+      <h4>Owner Options:</h4>
       <a href= <%= "/listings/" + data._id + '/edit' %> >Edit Post</a>
+
+      <a href="#">View Offers</a>
 
       <form class="btn" method="POST" action=<%= "/listings/" + data._id + "/available" + "?_method=PUT"%>>
         <button type="submit" class="btn" type="button" name="button">Available</button>
@@ -22,7 +24,32 @@
         <button type="submit" class="btn btn-default">Delete</button>
       </form>
 
+      <h4>Other Options:</h4>
       <a href= <%= "/trades/" + data.user_id +  "/" + data._id +"/selecttrade" %> >Make an offer</a>
-      <a href= <%= "/chats/" + data.user_id +  "/" + data._id + "/new" %> >Send Message</a>
+      <a href= <%= "/chats/new/" + data.user_id +  "/" + data._id %> >Send Message</a>
     </li>
+
+    <% offeredTrades.forEach(function (trade) { %>
+      <div class="col-md-12 trade-container">
+      <div class="row">
+          <a class="col-md-12" href=<%= "/trades/" + trade._id %>>View Trade</a>
+          <div class="col-md-5 listing">
+            <a href= <%= "/listings/" + trade.proposer_listing_id._id %> >
+              <h4 class="listingname"><%= trade.proposer_listing_id.name %></h4>
+            </a>
+            <h5 class="listingdescription"><%= trade.proposer_listing_id.description %></h5>
+            <p class="listingusername">Listed by: <%= trade.proposer_user_id.local.username %></p>
+          </div>
+          <div class="col-md-2">For</div>
+          <div class="col-md-5 listing">
+            <a href= <%= "/listings/" + trade.proposee_listing_id._id %> >
+              <h4 class="listingname"><%= trade.proposee_listing_id.name %></h4>
+            </a>
+            <h5 class="listingdescription"><%= trade.proposee_listing_id.description %></h5>
+            <p class="listingusername">Listed by: <%= trade.proposee_user_id.local.username %></p>
+          </div>
+      </div>
+    </div>
+    <% }) %>
+
 </ul>

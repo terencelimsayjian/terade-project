@@ -1,6 +1,7 @@
 var express = require('express')
 var router = express.Router()
 var Listing = require('../models/listing')
+var Trade = require('../models/trade')
 
 router.get('/', function (req, res) {
   Listing.find({ availability: true })
@@ -10,7 +11,7 @@ router.get('/', function (req, res) {
     res.render('listing/index', {
       data: allListings,
       user: req.user._id,
-      message: 'Available Books'})
+      header: 'Available Books'})
   })
 })
 .get('/mylistings', function (req, res) {
@@ -20,7 +21,7 @@ router.get('/', function (req, res) {
     if (err) throw err
     res.render('listing/index', {
       data: myListings,
-      message: 'My Books'
+      header: 'My Books'
     })
   })
 })
@@ -28,9 +29,31 @@ router.get('/', function (req, res) {
   Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
     if (err) throw err
     if (foundListing.user_id === req.user._id) {
-      res.render('listing/listing', { data: foundListing })
+      Trade.find({ proposee_listing_id: req.params.listingID })
+      .populate('proposer_user_id', 'local.username')
+      .populate('proposer_listing_id')
+      .populate('proposee_user_id', 'local.username')
+      .populate('proposee_listing_id')
+      .exec(function (err, offeredTrades) {
+        if (err) throw err
+        res.render('listing/listing', {
+          data: foundListing,
+          offeredTrades: offeredTrades,
+        })
+      })
     } else {
-      res.render('listing/listing', { data: foundListing })
+      Trade.find({ proposee_listing_id: req.params.listingID })
+      .populate('proposer_user_id', 'local.username')
+      .populate('proposer_listing_id')
+      .populate('proposee_user_id', 'local.username')
+      .populate('proposee_listing_id')
+      .exec(function (err, offeredTrades) {
+        if (err) throw err
+        res.render('listing/listing', {
+          data: foundListing,
+          offeredTrades: offeredTrades
+        })
+      })
     }
   })
   // ENTER VALIDATION. If owner is the user, show the owner options (Toggle available, delete). If not, (send message, offer trade)

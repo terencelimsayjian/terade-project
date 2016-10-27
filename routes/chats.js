@@ -6,9 +6,12 @@ var User = require('../models/user')
 var Chat = require('../models/chat')
 
 router.get('/', function (req, res) {
-  Chat.find({}, function (err, userMessages) {
+  Chat.find({}, function (err, userChats) {
     if (err) throw err
-    res.render('chat/index', { userMessages: userMessages })
+    res.render('chat/index', {
+      userChats: userChats,
+      header: 'All Chats'
+    })
   })
 })
 
@@ -19,7 +22,10 @@ router.get('/mychats', function (req, res) {
     .populate('listing_id', 'name')
     .exec(function (err, userChats) {
       if (err) throw err
-      res.render('chat/mychats', { userChats: userChats })
+      res.render('chat/index', {
+        userChats: userChats,
+        header: 'My Chats'
+      })
     })
 })
 
@@ -39,7 +45,7 @@ router.get('/mychats/:chatID', function (req, res) {
   })
 })
 
-router.get('/:ownerID/:listingID/new', function (req, res) {
+router.get('/new/:ownerID/:listingID', function (req, res) {
   User.findOne({ _id: req.params.ownerID })
   .populate('user_id', 'local.username')
   .exec(function (err, ownerUser) {

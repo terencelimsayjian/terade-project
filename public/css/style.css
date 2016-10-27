@@ -6,3 +6,20 @@ body {
   border: 2px solid grey;
   border-radius: 5px;
 }
+
+.trade-container {
+  border: 2px solid grey;
+  border-radius: 5px;
+}
+
+.chatmessage {
+  border: 1px solid black;
+  border-radius: 3px;
+  margin: 2px 0;
+}
+
+.chat {
+  border: 1px solid black;
+  border-radius: 3px;
+  margin: 2px 0;
+}

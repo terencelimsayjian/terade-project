@@ -6,33 +6,47 @@ var Chat = require('../models/chat')
 var Message = require('../models/message')
 
 router.get('/', function (req, res) {
-  Trade.find({}, function (err, allTrades) {
-    if (err) throw err
-    res.render('trade/index', { data: allTrades })
-  })
+  Trade.find({})
+    .populate('proposer_user_id', 'local.username')
+    .populate('proposer_listing_id')
+    .populate('proposee_user_id', 'local.username')
+    .populate('proposee_listing_id')
+    .exec(function (err, allTrades) {
+      if (err) throw err
+      res.render('trade/index', {
+        data: allTrades,
+        header: 'All Trades'
+      })
+    })
 })
 
 router.get('/offers', function (req, res) {
   Trade.find({ proposee_user_id: req.user.id })
   .populate('proposer_user_id', 'local.username')
-  .populate('proposer_listing_id', 'name')
+  .populate('proposer_listing_id')
   .populate('proposee_user_id', 'local.username')
-  .populate('proposee_listing_id', 'name')
+  .populate('proposee_listing_id')
   .exec(function (err, myOffers) {
     if (err) throw err
-    res.render('trade/receivedoffers', { data: myOffers })
+    res.render('trade/index', {
+      data: myOffers,
+      header: 'Received Offers'
+    })
   })
 })
 
 router.get('/offered', function (req, res) {
   Trade.find({ proposer_user_id: req.user.id })
   .populate('proposer_user_id', 'local.username')
-  .populate('proposer_listing_id', 'name')
+  .populate('proposer_listing_id')
   .populate('proposee_user_id', 'local.username')
-  .populate('proposee_listing_id', 'name')
+  .populate('proposee_listing_id')
   .exec(function (err, myOffered) {
     if (err) throw err
-    res.render('trade/madeoffers', { data: myOffered })
+    res.render('trade/index', {
+      data: myOffered,
+      header: 'Made Offers'
+    })
   })
 })
 
@@ -46,21 +60,9 @@ router.get('/:userID/:listingID/selecttrade', function (req, res) {
 router.get('/:tradeID', function (req, res) {
   Trade.findOne({ _id: req.params.tradeID })
     .populate('proposer_user_id', 'local.username')
-    .populate('proposer_listing_id', 'name')
+    .populate('proposer_listing_id')
     .populate('proposee_user_id', 'local.username')
-    .populate('proposee_listing_id', 'name')
-    .exec(function (err, thisTrade) {
-      if (err) throw err
-      res.render('trade/trade', { data: thisTrade })
-    })
-})
-
-router.get('/offers/:tradeID', function (req, res) {
-  Trade.findOne({ _id: req.params.tradeID })
-    .populate('proposer_user_id', 'local.username')
-    .populate('proposer_listing_id', 'name')
-    .populate('proposee_user_id', 'local.username')
-    .populate('proposee_listing_id', 'name')
+    .populate('proposee_listing_id')
     .exec(function (err, thisTrade) {
       if (err) throw err
       Chat.findOne({
@@ -69,29 +71,18 @@ router.get('/offers/:tradeID', function (req, res) {
         listing_id: thisTrade.proposee_listing_id
       }, function (err, thisChat) {
         if (err) throw err
-        res.render('trade/receivedoffer', { thisTrade: thisTrade, thisChat: thisChat })
+        res.render('trade/trade', {
+          thisTrade: thisTrade,
+          thisChat: thisChat
+        })
       })
     })
 })
 
-router.get('/offered/:tradeID', function (req, res) {
-  Trade.findOne({ _id: req.params.tradeID })
-    .populate('proposer_user_id', 'local.username')
-    .populate('proposer_listing_id', 'name')
-    .populate('proposee_user_id', 'local.username')
-    .populate('proposee_listing_id', 'name')
-    .exec(function (err, thisTrade) {
-      if (err) throw err
-      Chat.findOne({
-        proposer_user_id: thisTrade.proposer_user_id,
-        proposee_user_id: thisTrade.proposee_user_id,
-        listing_id: thisTrade.proposee_listing_id
-      }, function (err, thisChat) {
-        if (err) throw err
-        res.render('trade/madeoffer', { thisTrade: thisTrade, thisChat: thisChat })
-      })
-    })
-})
+/*
+  Validate: If req.user._id = proposee, render offers/:id
+  else render offered/:id
+*/
 
 router.post('/', function (req, res) {
   var newTrade = new Trade({

@@ -1,29 +1,41 @@
-<h2>Dis Trade</h2>
+<h2>Trade</h2>
 
 <ul>
     <li>
-      <strong>Trade ID: </strong><%= data._id %> <br>
-      <strong>Proposer User ID: </strong><%= data.proposer_user_id.local.username %> <br>
-      <strong>Proposer Listing ID: </strong><%= data.proposer_listing_id.name %> <br>
-      <strong>Proposee User ID: </strong><%= data.proposee_user_id.local.username %> <br>
-      <strong>Proposee Listing ID: </strong><%= data.proposee_listing_id.name %> <br>
-      <strong>Offer Date: </strong><%= data.listdate %> <br>
-      <strong>Status: </strong><%= data.status %> <br>
+      <strong>Proposer User ID: </strong><%= thisTrade.proposer_user_id.local.username %> <br>
+      <strong>Proposer Listing ID: </strong><%= thisTrade.proposer_listing_id.name %> <br>
+      <strong>Proposee User ID: </strong><%= thisTrade.proposee_user_id.local.username %> <br>
+      <strong>Proposee Listing ID: </strong><%= thisTrade.proposee_listing_id.name %> <br>
+      <strong>Offer Date: </strong><%= thisTrade.listdate %> <br>
+      <strong>Status: </strong><%= thisTrade.status %> <br>
     </li>
 
-    <form class="btn" method="POST" action=<%= "/trades/" + data._id + "/accept" + "?_method=PUT"%>>
+    <h4>Proposer Options:</h4>
+    <a href=<%= "/chats/mychats/" + thisChat._id %>>View Chat</a>
+
+    <form class="btn" method="POST" action=<%= "/trades/offered/" + thisTrade._id %>>
+      <button type="submit" class="btn btn-default">Remove Offer</button>
+    </form>
+
+    <br>
+
+    <h4>Proposee Options:</h4>
+    <form class="btn" method="POST" action=<%= "/trades/accept/" + thisTrade._id + "?_method=PUT"%>>
       <button type="submit" class="btn" type="button" name="button">Accept</button>
     </form>
 
-    <form class="btn" method="POST" action=<%= "/trades/" + data._id + "/reject" + "?_method=PUT" %>>
+    <form class="btn" method="POST" action=<%= "/trades/reject/" + thisTrade._id + "?_method=PUT" %>>
       <button type="submit" class="btn" type="button" name="button">Reject</button>
     </form>
 
-    <form class="btn" method="POST" action=<%= "/trades/" + data._id + "/pending" + "?_method=PUT" %>>
+    <form class="btn" method="POST" action=<%= "/trades/pending" + thisTrade._id + "?_method=PUT" %>>
       <button type="submit" class="btn" type="button" name="button">Pending</button>
     </form>
 
-    <form class="btn" method="POST" action=<%= "/trades/" + data._id + "?_method=DELETE"%>>
+    <br>
+
+    <h4>Admin Options:</h4>
+    <form class="btn" method="POST" action=<%= "/trades/" + thisTrade._id + "?_method=DELETE"%>>
       <button type="submit" class="btn btn-default">Delete</button>
     </form>
 

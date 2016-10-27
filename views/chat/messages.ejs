@@ -1,10 +1,10 @@
-<h2>Chat regarding <%= chat.proposee_user_id.local.username %>'s <%= chat.listing_id.name %></h2>
-<h3>Chat between <%= chat.proposer_user_id.local.username %> and <%= chat.proposee_user_id.local.username %></h3>
+<h2>
+  <a href=<%= "/listings/" + chat.listing_id._id %>><%= chat.listing_id.name %></a> <br>
+  <small><%= chat.proposee_user_id.local.username %></small>
+</h2>
 
-<a href=""></a>
 
 <form class="new-message" method="post" action=<%= "/chats/mychats/" + chatID %> >
-
   <div class="row">
     <div class="form-group col-md-12">
       <label for="messageInput">Send New Message</label>
@@ -12,13 +12,15 @@
     </div>
   </div>
   <button type="submit" class="btn btn-default">Submit</button>
-  </form>
+</form>
 
-  <ul>
-    <% chatMessages.forEach(function (message) { %>
-      <li>
-        <strong><%= message.user_id.local.username %>: </strong><%= message.message %> <br>
-        (Sent: <%= message.messagedate %>)
-      </li>
-    <% }) %>
-  </ul>
+
+<% chatMessages.forEach(function (message) { %>
+  <div class="row">
+    <div class="col-md-8 chatmessage">
+      <strong><%= message.user_id.local.username %></strong> <br>
+      <%= message.message %> <br>
+      (Sent: <%= message.messagedate %>)
+    </div>
+  </div>
+<% }) %>

@@ -1,14 +1,10 @@
-<h2>Messages Index</h2>
+<h2><%= header %></h2>
 
-<ul>
-  <% userMessages.forEach(function (message) { %>
-    <li>
-      <strong>Message ID: </strong><%= message._id %> <br>
-      <strong>Message: </strong><%= message.message %> <br>
-      <strong>Message Date: </strong><%= message.messagedate %> <br>
-      <strong>Proposer UserID: </strong><%= message.proposer_user_id %> <br>
-      <strong>Proposee UserID: </strong><%= message.proposee_user_id %> <br>
-      <strong>Listing ID: </strong><%= message.listing_id %> <br>
-    </li>
+  <% userChats.forEach(function (chat) { %>
+    <div class="chat col-md-12">
+      <strong>Proposer: </strong><%= chat.proposer_user_id.local.username %> <br>
+      <strong>Proposee: </strong><%= chat.proposee_user_id.local.username %> <br>
+      <strong>Listing: </strong><%= chat.listing_id.name %> <br>
+      <a href= <%= "/chats/mychats/" + chat._id %> >View Messages</a>
+    </div>
   <% }) %>
-</ul>
