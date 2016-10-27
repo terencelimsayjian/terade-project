@@ -28,6 +28,7 @@ router.get('/', function (req, res) {
 .get('/:listingID', function (req, res) {
   Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
     if (err) throw err
+
     if (foundListing.user_id === req.user._id) {
       Trade.find({ proposee_listing_id: req.params.listingID })
       .populate('proposer_user_id', 'local.username')
