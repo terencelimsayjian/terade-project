@@ -1,8 +1,25 @@
 <h2>Trade</h2>
 
-<strong>Proposer User ID: </strong><%= thisTrade.proposer_user_id.local.username %> <br>
-<strong>Proposer Listing ID: </strong><%= thisTrade.proposer_listing_id.name %> <br>
-<strong>Proposee User ID: </strong><%= thisTrade.proposee_user_id.local.username %> <br>
-<strong>Proposee Listing ID: </strong><%= thisTrade.proposee_listing_id.name %> <br>
+<strong>Proposer User ID: </strong>
+<a href=<%= "/listings/userlistings/" + thisTrade.proposer_user_id._id %>>
+<%= thisTrade.proposer_user_id.local.username %> <br>
+</a>
+
+<strong>Proposer Listing ID: </strong>
+<a href= <%= "/listings/" + thisTrade.proposer_listing_id._id %> >
+<%= thisTrade.proposer_listing_id.name %> <br>
+</a>
+
+<strong>Proposee User ID: </strong>
+<a href=<%= "/listings/userlistings/" + thisTrade.proposee_user_id._id %>>
+<%= thisTrade.proposee_user_id.local.username %> <br>
+</a>
+
+<strong>Proposee Listing ID: </strong>
+<a href= <%= "/listings/" + thisTrade.proposee_listing_id._id %> >
+<%= thisTrade.proposee_listing_id.name %> <br>
+</a>
+
 <strong>Offer Date: </strong><%= thisTrade.listdate %> <br>
+
 <strong>Status: </strong><%= thisTrade.status %> <br>

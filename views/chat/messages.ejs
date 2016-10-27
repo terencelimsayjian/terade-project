@@ -3,6 +3,11 @@
   <small><%= chat.proposee_user_id.local.username %></small>
 </h2>
 
+Chat with
+<a href=<%= "/listings/userlistings/" + chat.proposer_user_id._id %>>
+<%= chat.proposer_user_id.local.username %> <br>
+</a>
+
 <form class="new-message" method="post" action=<%= "/chats/mychats/" + chatID %> >
   <div class="row">
     <div class="form-group col-md-12">
@@ -13,7 +18,7 @@
   <button type="submit" class="btn btn-default">Submit</button>
 </form>
 
-<a href= <%= "/trades/" + chat.proposee_user_id._id +  "/" + chat.listing_id._id +"/selecttrade" %> >Make an offer</a>
+<a href= <%= "/trades/" + chat.proposee_user_id._id +  "/" + chat.listing_id._id +"/selecttrade" %> >Make an offer</a> <br>
 
 <% chatMessages.forEach(function (message) { %>
     <div class="col-md-8 chatmessage">

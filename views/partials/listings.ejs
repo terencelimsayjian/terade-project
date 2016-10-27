@@ -1,0 +1,9 @@
+<% data.forEach(function (listing) { %>
+  <div class="col-md-4 listing">
+  <a href= <%= "/listings/" + listing._id %> >
+    <h4 class="listingname"><%= listing.name %></h4>
+  </a>
+  <h5 class="listingdescription"><%= listing.description %></h5>
+  <p class="listingusername">Listed by: <a href=<%= "/listings/userlistings/" + listing.user_id._id %>><%= listing.user_id.local.username %></a></p>
+  </div>
+<% }) %>

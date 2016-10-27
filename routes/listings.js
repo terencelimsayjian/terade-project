@@ -13,17 +13,27 @@ router.get('/', function (req, res) {
       header: 'Available Books'})
   })
 })
-.get('/mylistings', function (req, res) {
-  Listing.find({ user_id: req.user._id })
+
+.get('/userlistings/:userID', function (req, res) {
+  Listing.find({ user_id: req.params.userID })
   .populate('user_id', 'local.username')
   .exec(function (err, myListings) {
     if (err) throw err
-    res.render('listing/mylistings', {
-      data: myListings,
-      header: 'My Books'
-    })
+
+    if (String(req.user._id) === String(myListings[0].user_id._id)) {
+      res.render('listing/mylistings', {
+        data: myListings,
+        header: myListings[0].user_id.local.username + "'s Books"
+      })
+    } else {
+      res.render('listing/index', {
+        data: myListings,
+        header: myListings[0].user_id.local.username + "'s Books"
+      })
+    }
   })
 })
+
 .get('/:listingID', function (req, res) {
   Listing.findOne({ _id: req.params.listingID })
     .populate('user_id', 'local.username')

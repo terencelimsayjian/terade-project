@@ -1,6 +1,6 @@
 <h2>
   <%= data.name %><br>
-  <small><%= data.user_id.local.username %></small>
+  <small><a href=<%= "/listings/userlistings/" + data.user_id._id %>><%= data.user_id.local.username %></a></small>
 </h2>
 
 <strong>Listing Name: </strong><%= data.name %> <br>
