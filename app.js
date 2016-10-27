@@ -11,7 +11,7 @@ var MongoStore = require('connect-mongo')(session)
 var morgan = require('morgan')
 var methodOverride = require('method-override')
 
-var teradeRoutes = require('./routes/terade')
+var teradeRoutes = require('./routes/useradmin')
 var listingRoutes = require('./routes/listings')
 var userRoutes = require('./routes/users')
 var tradeRoutes = require('./routes/trades')
@@ -37,11 +37,6 @@ app.use(session({
   })
 }))
 
-app.use(function (req, res, next) {
-  res.locals.user = req.user
-  next()
-})
-
 app.use(methodOverride('_method'))
 
 app.use(morgan('dev'))
@@ -55,6 +50,11 @@ app.use(express.static(__dirname + '/public'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(expressLayouts)
+
+app.use(function (req, res, next) {
+  res.locals.user = req.user
+  next()
+})
 
 app.use('/users', userRoutes)
 app.use('/listings', listingRoutes)

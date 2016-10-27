@@ -18,45 +18,43 @@ router.get('/', function (req, res) {
   .populate('user_id', 'local.username')
   .exec(function (err, myListings) {
     if (err) throw err
-    res.render('listing/index', {
+    res.render('listing/mylistings', {
       data: myListings,
       header: 'My Books'
     })
   })
 })
 .get('/:listingID', function (req, res) {
-  Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
-    if (err) throw err
-
-    if (foundListing.user_id === req.user._id) {
-      Trade.find({ proposee_listing_id: req.params.listingID })
-      .populate('proposer_user_id', 'local.username')
-      .populate('proposer_listing_id')
-      .populate('proposee_user_id', 'local.username')
-      .populate('proposee_listing_id')
-      .exec(function (err, offeredTrades) {
-        if (err) throw err
-        res.render('listing/listing', {
-          data: foundListing,
-          offeredTrades: offeredTrades,
+  Listing.findOne({ _id: req.params.listingID })
+    .populate('user_id', 'local.username')
+    .exec(function (err, foundListing) {
+      if (err) throw err
+      if (String(req.user._id) === String(foundListing.user_id._id)) {
+        Trade.find({ proposee_listing_id: req.params.listingID })
+        .populate('proposer_user_id', 'local.username')
+        .populate('proposer_listing_id')
+        .populate('proposee_user_id', 'local.username')
+        .populate('proposee_listing_id')
+        .exec(function (err, offeredTrades) {
+          if (err) throw err
+          var offers
+          if (offeredTrades.length === 0) {
+            offers = 'No Offers at this time'
+          } else {
+            offers = 'Offers:'
+          }
+          res.render('listing/mylisting', {
+            data: foundListing,
+            offeredTrades: offeredTrades,
+            offers: offers
+          })
         })
-      })
-    } else {
-      Trade.find({ proposee_listing_id: req.params.listingID })
-      .populate('proposer_user_id', 'local.username')
-      .populate('proposer_listing_id')
-      .populate('proposee_user_id', 'local.username')
-      .populate('proposee_listing_id')
-      .exec(function (err, offeredTrades) {
-        if (err) throw err
-        res.render('listing/listing', {
-          data: foundListing,
-          offeredTrades: offeredTrades
+      } else {
+        res.render('listing/otherlisting', {
+          data: foundListing
         })
-      })
-    }
-  })
-  // ENTER VALIDATION. If owner is the user, show the owner options (Toggle available, delete). If not, (send message, offer trade)
+      }
+    })
 })
 .get('/:listingID/edit', function (req, res) {
   Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
@@ -82,7 +80,7 @@ router.put('/:listingID/available', function (req, res) {
     if (err) throw err
     listing.availability = true
     listing.save()
-    res.redirect('/listings/mylistings')
+    res.redirect('/listings/' + req.params.listingID)
   })
 })
 
@@ -91,7 +89,7 @@ router.put('/:listingID/unavailable', function (req, res) {
     if (err) throw err
     listing.availability = false
     listing.save()
-    res.redirect('/listings/mylistings')
+    res.redirect('/listings/' + req.params.listingID)
   })
 })
 

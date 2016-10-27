@@ -40,7 +40,11 @@ router.get('/mychats/:chatID', function (req, res) {
     .populate('listing_id', 'name')
     .exec(function (err, chat) {
       if (err) throw err
-      res.render('chat/messages', { chatMessages: chatMessages, chatID: req.params.chatID, chat: chat })
+      res.render('chat/messages', {
+        chatMessages: chatMessages,
+        chatID: req.params.chatID,
+        chat: chat
+      })
     })
   })
 })

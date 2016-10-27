@@ -1,0 +1,27 @@
+<% include ../partials/listing %>
+
+<a href= <%= "/listings/" + data._id + '/edit' %> >Edit Post</a>
+
+<form class="btn" method="POST" action=<%= "/listings/" + data._id + "/available" + "?_method=PUT"%>>
+  <button type="submit" class="btn" type="button" name="button">Available</button>
+</form>
+
+<form class="btn" method="POST" action=<%= "/listings/" + data._id + "/unavailable" + "?_method=PUT"%>>
+  <button type="submit" class="btn" type="button" name="button">Unavailable</button>
+</form>
+
+<form class="btn delete" method="POST" action=<%= "/listings/" + data._id + "?_method=DELETE"%>>
+  <button type="submit" class="btn btn-default">Delete</button>
+</form>
+
+<h3><%= offers %></h3>
+<% offeredTrades.forEach(function (trade) { %>
+    <div class="col-md-6 listing">
+      <a href=<%= "/trades/" + trade._id %>>View Trade</a>
+      <a href= <%= "/listings/" + trade.proposer_listing_id._id %> >
+        <h4 class="listingname"><%= trade.proposer_listing_id.name %></h4>
+      </a>
+      <h5 class="listingdescription"><%= trade.proposer_listing_id.description %></h5>
+      <p class="listingusername">Listed by: <%= trade.proposer_user_id.local.username %></p>
+    </div>
+<% }) %>

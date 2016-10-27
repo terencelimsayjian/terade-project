@@ -65,24 +65,27 @@ router.get('/:tradeID', function (req, res) {
     .populate('proposee_listing_id')
     .exec(function (err, thisTrade) {
       if (err) throw err
+      console.log(thisTrade.proposee_user_id)
       Chat.findOne({
         proposer_user_id: thisTrade.proposer_user_id,
         proposee_user_id: thisTrade.proposee_user_id,
         listing_id: thisTrade.proposee_listing_id
       }, function (err, thisChat) {
-        if (err) throw err
-        res.render('trade/trade', {
-          thisTrade: thisTrade,
-          thisChat: thisChat
-        })
+        if (String(req.user._id) === String(thisTrade.proposee_user_id._id)) {
+          if (err) throw err
+          res.render('trade/receivedoffer', {
+            thisTrade: thisTrade,
+            thisChat: thisChat
+          })
+        } else if (String(req.user._id) === String(thisTrade.proposer_user_id._id)) {
+          res.render('trade/madeoffer', {
+            thisTrade: thisTrade,
+            thisChat: thisChat
+          })
+        }
       })
     })
 })
-
-/*
-  Validate: If req.user._id = proposee, render offers/:id
-  else render offered/:id
-*/
 
 router.post('/', function (req, res) {
   var newTrade = new Trade({
@@ -103,15 +106,16 @@ router.post('/', function (req, res) {
     if (err) throw err
 
     Listing.findOne({ _id: newTrade.proposer_listing_id })
-    .populate('user_id', 'username')
+    .populate('user_id', 'local.username')
     .exec(function (err, proposerListing) {
+      if (err) throw err
       Listing.findOne({ _id: newTrade.proposee_listing_id })
-      .populate('user_id', 'username')
+      .populate('user_id', 'local.username')
       .exec(function (err, proposeeListing) {
         if (err) throw err
 
         var newMessage = new Message({
-          message: 'Hi, I would like to trade my ' + proposerListing.name + ' for your ' + proposeeListing.name,
+          message: proposerListing.user_id.local.username + ' has offered you ' + proposerListing.name + ' for ' + proposeeListing.name,
           chat_id: '',
           user_id: req.user._id,
           messagedate: Date.now()
@@ -160,6 +164,7 @@ router.put('/reject/:tradeID', function (req, res) {
       Listing.findOne({ _id: foundTrade.proposer_listing_id })
       .populate('user_id', 'username')
       .exec(function (err, proposerListing) {
+        if (err) throw err
         Listing.findOne({ _id: foundTrade.proposee_listing_id })
         .populate('user_id', 'username')
         .exec(function (err, proposeeListing) {
@@ -197,6 +202,7 @@ router.put('/accept/:tradeID', function (req, res) {
       Listing.findOne({ _id: foundTrade.proposer_listing_id })
       .populate('user_id', 'username')
       .exec(function (err, proposerListing) {
+        if (err) throw err
         Listing.findOne({ _id: foundTrade.proposee_listing_id })
         .populate('user_id', 'username')
         .exec(function (err, proposeeListing) {
@@ -223,6 +229,44 @@ router.put('/pending/:tradeID', function (req, res) {
     trade.status = 'Pending'
     trade.save()
     res.redirect('/trades/offers')
+  })
+})
+
+router.put('/remove/:tradeID', function (req, res) {
+  Trade.findOne({ _id: req.params.tradeID }, function (err, foundTrade) {
+    if (err) throw err
+
+    Chat.findOne({
+      proposer_user_id: foundTrade.proposer_user_id,
+      proposee_user_id: foundTrade.proposee_user_id,
+      listing_id: foundTrade.proposee_listing_id
+    }, function (err, thisChat) {
+      if (err) throw err
+
+      Listing.findOne({ _id: foundTrade.proposer_listing_id })
+      .populate('user_id', 'username')
+      .exec(function (err, proposerListing) {
+        if (err) throw err
+        Listing.findOne({ _id: foundTrade.proposee_listing_id })
+        .populate('user_id', 'username')
+        .exec(function (err, proposeeListing) {
+          if (err) throw err
+
+          var newMessage = new Message({
+            message: req.user.local.username + ' has removed the offer of ' + proposerListing.name + ' for ' + proposeeListing.name,
+            chat_id: thisChat._id,
+            user_id: req.user._id,
+            messagedate: Date.now()
+          })
+          newMessage.save()
+
+          res.redirect('/chats/mychats/' + thisChat._id)
+
+          foundTrade.remove()
+          foundTrade.save()
+        })
+      })
+    })
   })
 })
 
