@@ -1,29 +1,18 @@
 $(document).ready(function () {
-  // var $newUser = $('.new-user')
-  // var $newListing = $('.new-listing')
-  // var $deleteBtn = $('.delete')
+  function truncateString (str, num) {
+    var shortString = ''
+    if (str.length > num) {
+      if (num > 3) {
+        shortString = str.slice(0, num - 3)
+      } else {
+        shortString = str.slice(0, num)
+      }
+      shortString += '...'
+    } else {
+      shortString = str
+    }
+    return shortString
+  }
 
-  // $newListing.on('submit', function (e) {
-  //   e.preventDefault()
-  //
-  //   var formdata = $(this).serializeArray()
-  //
-  //   $.ajax({
-  //     type: 'POST',
-  //     url: '/listings',
-  //     data: formdata
-  //   }).done(function () {
-  //     console.log('done!')
-  //   })
-  // })
-
-  // $deleteBtn.on('click', function (e) {
-  //   $.ajax({
-  //     type: 'DELETE',
-  //     success: function (result) {
-  //       alert('Delete request success')
-  //     }
-  //   })
-  // })
-
+  
 })

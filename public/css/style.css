@@ -1,3 +1,8 @@
 body {
   background-color: rgb(36, 94, 171);
 }
+
+.listing {
+  border: 2px solid grey;
+  border-radius: 5px;
+}

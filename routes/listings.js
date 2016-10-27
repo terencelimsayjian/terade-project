@@ -7,22 +7,35 @@ router.get('/', function (req, res) {
   .populate('user_id', 'local.username')
   .exec(function (err, allListings) {
     if (err) throw err
-    res.render('listing/index', { data: allListings, user: req.user._id })
-  })
-}).get('/mylistings', function (req, res) {
-  Listing.find({ user_id: req.user._id }, function (err, myListings) {
-    if (err) throw err
-    res.render('listing/mylistings', { data: myListings })
+    res.render('listing/index', {
+      data: allListings,
+      user: req.user._id,
+      message: 'Available Books'})
   })
 })
-.get('/new', function (req, res) {
-  res.render('listing/new')
-}).get('/:listingID', function (req, res) {
+.get('/mylistings', function (req, res) {
+  Listing.find({ user_id: req.user._id })
+  .populate('user_id', 'local.username')
+  .exec(function (err, myListings) {
+    if (err) throw err
+    res.render('listing/index', {
+      data: myListings,
+      message: 'My Books'
+    })
+  })
+})
+.get('/:listingID', function (req, res) {
   Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
     if (err) throw err
-    res.render('listing/listing', { data: foundListing })
+    if (foundListing.user_id === req.user._id) {
+      res.render('listing/listing', { data: foundListing })
+    } else {
+      res.render('listing/listing', { data: foundListing })
+    }
   })
-}).get('/:listingID/edit', function (req, res) {
+  // ENTER VALIDATION. If owner is the user, show the owner options (Toggle available, delete). If not, (send message, offer trade)
+})
+.get('/:listingID/edit', function (req, res) {
   Listing.findOne({ _id: req.params.listingID }, function (err, foundListing) {
     if (err) throw err
     res.render('listing/edit', { data: foundListing })

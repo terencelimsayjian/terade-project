@@ -21,5 +21,8 @@
       <form class="btn delete" method="POST" action=<%= "/listings/" + data._id + "?_method=DELETE"%>>
         <button type="submit" class="btn btn-default">Delete</button>
       </form>
+
+      <a href= <%= "/trades/" + data.user_id +  "/" + data._id +"/selecttrade" %> >Make an offer</a>
+      <a href= <%= "/chats/" + data.user_id +  "/" + data._id + "/new" %> >Send Message</a>
     </li>
 </ul>

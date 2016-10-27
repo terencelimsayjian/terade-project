@@ -1,15 +1,12 @@
-<h2>Available Books</h2>
+<h2><%= message %></h2>
 
-<ul>
   <% data.forEach(function (listing) { %>
-    <li>
-      <strong>Listing Name: </strong><%= listing.name %> <br>
-      <strong>Listing Description: </strong><%= listing.description %> <br>
-      <strong>List Date: </strong><%= listing.listdate %> <br>
-      <strong>Availibility: </strong><%= listing.availability %> <br>
-      <strong>Username: </strong><%= listing.user_id.local.username %> <br>
-      <a href= <%= "/trades/" + listing.user_id._id +  "/" + listing._id +"/selecttrade" %> >Make an offer</a>
-      <a href= <%= "/chats/" + listing.user_id._id +  "/" + listing._id + "/new" %> >Send Message</a>
-    </li>
+    <div class="col-md-4 listing">
+    <a href= <%= "/listings/" + listing._id %> >
+      <h4 class="listingname"><%= listing.name %></h4>
+    </a>
+    <h5 class="listingdescription"><%= listing.description %></h5>
+    <p class="listingusername">Listed by: <%= listing.user_id.local.username %></p>
+    <p class="listingdate">Listed:  <%= listing.listdate %> </p>
+    </div>
   <% }) %>
-</ul>
