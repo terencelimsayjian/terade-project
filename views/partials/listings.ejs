@@ -1,9 +1,17 @@
 <% data.forEach(function (listing) { %>
-  <div class="col-md-4 listing">
-  <a href= <%= "/listings/" + listing._id %> >
-    <h4 class="listingname"><%= listing.name %></h4>
-  </a>
-  <h5 class="listingdescription"><%= listing.description %></h5>
-  <p class="listingusername">Listed by: <a href=<%= "/listings/userlistings/" + listing.user_id._id %>><%= listing.user_id.local.username %></a></p>
+    <div class="col-md-4 listing">
+      <div class="listing-margin">
+        <a href= <%= "/listings/" + listing._id %> >
+          <h3 class="listingname"><%= listing.name %></h3>
+        </a>
+
+        <h4 class="listingdescription"><%= listing.description %></h4>
+
+        <p class="listingusername">Listed by:
+          <a href=<%= "/listings/userlistings/" + listing.user_id._id %>>
+          <%= listing.user_id.local.username %>
+          </a>
+        </p>
+      </div>
   </div>
 <% }) %>

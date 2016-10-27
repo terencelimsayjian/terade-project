@@ -20,10 +20,10 @@ router.get('/', function (req, res) {
   .exec(function (err, myListings) {
     if (err) throw err
 
-    if (String(req.user._id) === String(myListings[0].user_id._id)) {
+    if (String(req.user._id) === String(req.params.userID)) {
       res.render('listing/mylistings', {
         data: myListings,
-        header: myListings[0].user_id.local.username + "'s Books"
+        header: req.user.local.username + "'s Books"
       })
     } else {
       var filteredListings = myListings.filter(function (listing) {
@@ -86,7 +86,7 @@ router.post('/', function (req, res) {
     user_id: req.user._id
   })
   newListing.save()
-  res.redirect('/listings/mylistings')
+  res.redirect('/listings/userlistings/' + req.user._id)
 })
 
 router.put('/:listingID/available', function (req, res) {
@@ -110,7 +110,7 @@ router.put('/:listingID/unavailable', function (req, res) {
 router.delete('/:listingID', function (req, res) {
   Listing.remove({ _id: req.params.listingID }, function (err, result) {
     if (err) throw err
-    res.redirect('/listings/mylistings')
+    res.redirect('/listings/userlistings/' + req.user._id)
   })
 })
 

@@ -1,18 +1,25 @@
 <% include ../partials/listing %>
 
-<a href= <%= "/listings/" + data._id + '/edit' %> >Edit Post</a>
+<div class="row">
+  <div class="col-md-2">
+    <form method="POST" action=<%= "/listings/" + data._id + "/available" + "?_method=PUT"%>>
+      <button type="submit" class="btn btn-primary" type="button" name="button">Available</button>
+    </form>
+  </div>
 
-<form class="btn" method="POST" action=<%= "/listings/" + data._id + "/available" + "?_method=PUT"%>>
-  <button type="submit" class="btn" type="button" name="button">Available</button>
-</form>
+  <div class="col-md-2">
+    <form method="POST" action=<%= "/listings/" + data._id + "/unavailable" + "?_method=PUT"%>>
+      <button type="submit" class="btn btn-primary" type="button" name="button">Unavailable</button>
+    </form>
+  </div>
 
-<form class="btn" method="POST" action=<%= "/listings/" + data._id + "/unavailable" + "?_method=PUT"%>>
-  <button type="submit" class="btn" type="button" name="button">Unavailable</button>
-</form>
+  <div class="col-md-2">
+    <form method="POST" action=<%= "/listings/" + data._id + "?_method=DELETE"%>>
+      <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+  </div>
 
-<form class="btn delete" method="POST" action=<%= "/listings/" + data._id + "?_method=DELETE"%>>
-  <button type="submit" class="btn btn-default">Delete</button>
-</form>
+</div>
 
 <h3><%= offers %></h3>
 <% offeredTrades.forEach(function (trade) { %>

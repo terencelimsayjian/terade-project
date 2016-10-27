@@ -20,6 +20,7 @@ router.get('/', function (req, res) {
     })
 })
 
+// okay
 router.get('/offers', function (req, res) {
   Trade.find({ proposee_user_id: req.user.id })
   .populate('proposer_user_id', 'local.username')
@@ -43,6 +44,7 @@ router.get('/offered', function (req, res) {
   .populate('proposee_listing_id')
   .exec(function (err, myOffered) {
     if (err) throw err
+    console.log(myOffered)
     res.render('trade/index', {
       data: myOffered,
       header: 'Made Offers'
@@ -228,7 +230,7 @@ router.put('/pending/:tradeID', function (req, res) {
     if (err) throw err
     trade.status = 'Pending'
     trade.save()
-    res.redirect('/trades/offers')
+    res.redirect('/trades/' + req.params.tradeID)
   })
 })
 

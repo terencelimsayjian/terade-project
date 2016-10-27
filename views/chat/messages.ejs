@@ -1,29 +1,44 @@
 <h2>
   <a href=<%= "/listings/" + chat.listing_id._id %>><%= chat.listing_id.name %></a> <br>
-  <small><%= chat.proposee_user_id.local.username %></small>
-</h2>
 
-Chat with
-<a href=<%= "/listings/userlistings/" + chat.proposer_user_id._id %>>
-<%= chat.proposer_user_id.local.username %> <br>
-</a>
+  <small>
+    <a href=<%= "/listings/userlistings/" + chat.proposee_user_id._id %>>
+      <%= chat.proposee_user_id.local.username %>
+    </a>
+  and
+    <a href=<%= "/listings/userlistings/" + chat.proposer_user_id._id %>>
+      <%= chat.proposer_user_id.local.username %> <br>
+    </a>
+  </small>
+</h2>
 
 <form class="new-message" method="post" action=<%= "/chats/mychats/" + chatID %> >
   <div class="row">
     <div class="form-group col-md-12">
-      <label for="messageInput">Send New Message</label>
+      <label for="messageInput"></label>
       <input type="text" class="form-control" id="messageInput" placeholder="Write Message Here" name="message">
     </div>
   </div>
-  <button type="submit" class="btn btn-default">Submit</button>
+
+  <div class="row">
+      <button type="submit" class="btn btn-primary col-md-4 col-md-offset-1">Submit New Message</button>
+
+  <% if (String(chat.proposer_user_id._id) === String(user._id)) { %>
+    <a class="btn btn-primary col-md-4 col-md-offset-2" href= <%= "/trades/" + chat.proposee_user_id._id +  "/" + chat.listing_id._id +"/selecttrade" %> >
+    Offer a Book
+    </a>
+    <% } %>
+  </div>
 </form>
 
-<a href= <%= "/trades/" + chat.proposee_user_id._id +  "/" + chat.listing_id._id +"/selecttrade" %> >Make an offer</a> <br>
 
 <% chatMessages.forEach(function (message) { %>
-    <div class="col-md-8 chatmessage">
-      <strong><%= message.user_id.local.username %></strong> <br>
-      <%= message.message %> <br>
-      (Sent: <%= message.messagedate %>)
+    <% if (String(message.user_id._id) === String(user._id)) { %>
+      <div class="user-message chat-message">
+    <% } else { %>
+      <div class="reply-message chat-message">
+    <% } %>
+      <span class="embolden"><%= message.user_id.local.username %></span>: <%= message.message %> <br>
+      <span class="message-time-stamp">(Sent: <%= message.messagedate %>)</span>
     </div>
 <% }) %>

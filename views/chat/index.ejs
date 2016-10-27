@@ -1,10 +1,14 @@
 <h2><%= header %></h2>
 
   <% userChats.forEach(function (chat) { %>
-    <div class="chat col-md-12">
-      <strong>Proposer: </strong><%= chat.proposer_user_id.local.username %> <br>
-      <strong>Proposee: </strong><%= chat.proposee_user_id.local.username %> <br>
-      <strong>Listing: </strong><%= chat.listing_id.name %> <br>
-      <a href= <%= "/chats/mychats/" + chat._id %> >View Messages</a>
+    <div class="row chat">
+      <div class="col-md-8">
+        <%= chat.listing_id.name %><br>
+        <%= chat.proposee_user_id.local.username %> <br>
+        <strong>Initiated by: </strong><%= chat.proposer_user_id.local.username %> <br>
+      </div>
+      <div class="col-md-4">
+        <a class="btn btn-primary view-message" href= <%= "/chats/mychats/" + chat._id %> >View Messages</a>
+      </div>
     </div>
   <% }) %>

@@ -1,4 +1,9 @@
-<h2>Create Message</h2>
+<h2><%= listing.name %><br>
+<small>message to
+<a href=<%= "/listings/userlistings/" + ownerUser._id %>>
+<%= ownerUser.local.username %>
+</a>
+</small></h2>
 
 <form class="new-message" method="post" action="/chats">
   <input type="hidden" value=<%= ownerUser._id %> name="ownerUserID" />
@@ -13,10 +18,3 @@
   <button type="submit" class="btn btn-default">Submit</button>
 
 </form> <br>
-
-<%= ownerUser %> <br>
-<%= ownerUser.local.username %> <br>
-<%= listing %> <br>
-<%= listing.name %> <br>
-<%= user %> <br>
-<%= user.local.username %> <br>

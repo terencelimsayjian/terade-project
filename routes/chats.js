@@ -58,7 +58,11 @@ router.get('/new/:ownerID/:listingID', function (req, res) {
     .populate('_id', 'name')
     .exec(function (err, listing) {
       if (err) throw err
-      res.render('chat/create', { ownerUser: ownerUser, listing: listing, user: req.user })
+      res.render('chat/create', {
+        ownerUser: ownerUser,
+        listing: listing,
+        user: req.user
+      })
     })
   })
 })
