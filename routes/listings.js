@@ -10,7 +10,6 @@ router.get('/', function (req, res) {
     if (err) throw err
     res.render('listing/index', {
       data: allListings,
-      user: req.user._id,
       header: 'Available Books'})
   })
 })
