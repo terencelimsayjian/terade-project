@@ -17,24 +17,35 @@
       <a class="navbar-brand" href="/listings">Booker</a>
     </div>
 
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="/listings">Browse</a></li>
-        <li><a href=<%= "/listings/userlistings/" + user._id %>>My Books</a></li>
-        <li><a href="/trades/offers">Received Offers</a></li>
-        <li><a href="/trades/offered">Made Offers</a></li>
-        <li><a href="/chats/mychats">Chats</a></li>
+    <% if (user) { %>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="/listings">Browse</a></li>
+          <li><a href=<%= "/listings/userlistings/" + user._id %>>My Books</a></li>
+          <li><a href="/trades/offers">Received Offers</a></li>
+          <li><a href="/trades/offered">Made Offers</a></li>
+          <li><a href="/chats/mychats">Chats</a></li>
+          </ul>
 
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
+          <ul class="nav navbar-nav navbar-right">
 
-        <% if (user) { %>
           <li><a href="/profile"><%=user.local.username%></a></li>
           <li><a href="/logout">Logout</a></li>
-        <% } else { %>
+    <% } else { %>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="/listings">Browse</a></li>
+          <li><a href=<%= "/login" %>>My Books</a></li>
+          <li><a href="/login">Received Offers</a></li>
+          <li><a href="/login">Made Offers</a></li>
+          <li><a href="/login">Chats</a></li>
+          </ul>
+
+          <ul class="nav navbar-nav navbar-right">
+
           <li><a href="/signup">Signup</a></li>
           <li><a href="/login">Login</a></li>
-        <% } %>
+      <% } %>
       </ul>
     </div>
   </div>

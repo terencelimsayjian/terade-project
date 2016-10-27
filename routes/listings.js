@@ -26,8 +26,12 @@ router.get('/', function (req, res) {
         header: myListings[0].user_id.local.username + "'s Books"
       })
     } else {
+      var filteredListings = myListings.filter(function (listing) {
+        return (listing.availability === true)
+      })
+
       res.render('listing/index', {
-        data: myListings,
+        data: filteredListings,
         header: myListings[0].user_id.local.username + "'s Books"
       })
     }
