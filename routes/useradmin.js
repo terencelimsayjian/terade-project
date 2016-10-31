@@ -23,7 +23,8 @@ router.route('/signup')
         User.find({}, function (err, allUsers) {
           if (err) throw err
           res.render('terade/signup', {
-            message: req.flash('signupMessage')
+            message: req.flash('signupMessage'),
+            errMessage: req.flash('errMessage')
           })
         })
       })

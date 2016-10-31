@@ -25,8 +25,11 @@ module.exports = function (passport) {
         return next(null, false, req.flash('signupMessage', 'That email is unavailable'))
       } else {
         User.create(req.body.user, function (err, newUser) {
-          if (err) throw err
-          return next(null, newUser, req.flash('signupMessage', 'Account created!'))
+          if (err) {
+            return next(null, false, req.flash('errMessage', err))
+          } else {
+            return next(null, newUser, req.flash('signupMessage', 'Account created!'))
+          }
         })
       }
     })

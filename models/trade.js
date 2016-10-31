@@ -18,7 +18,10 @@ var tradeSchema = new mongoose.Schema({
     ref: 'Listing'
   },
   listdate: Date,
-  status: String
+  status: {
+    type: String,
+    enum: ['Pending', 'Accepted', 'Rejected']
+  }
 })
 
 var Trade = mongoose.model('Trade', tradeSchema)
