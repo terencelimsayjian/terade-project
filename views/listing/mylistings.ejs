@@ -1,9 +1,12 @@
-<h2><%= header %></h2>
+<div class="jumbotron">
+  <h2><%= header %></h2>
+</div>
+
 
 <% if (user) { %>
   <form class="new-listing" method="post" action="/listings">
     <div class="row">
-      <div class="form-group col-md-7">
+      <div class="form-group col-md-5 col-md-offset-1">
         <label for="listingNameInput">Name</label>
         <input type="text" class="form-control" id="listingNameInput" placeholder="Item Name" name="listing[name]">
       </div>

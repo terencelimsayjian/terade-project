@@ -1,34 +1,47 @@
-<% include ../partials/listing %>
+<div class="jumbotron">
+  <% include ../partials/listing %>
 
-<div class="row">
-  <div class="col-md-2">
-    <form method="POST" action=<%= "/listings/" + data._id + "/available" + "?_method=PUT"%>>
-      <button type="submit" class="btn btn-primary" type="button" name="button">Available</button>
-    </form>
+  <div class="row">
+    <div class="button-div">
+      <form method="POST" action=<%= "/listings/" + data._id + "/available" + "?_method=PUT"%>>
+        <button type="submit" class="btn btn-primary" type="button" name="button">Available</button>
+      </form>
+    </div>
+
+    <div class="button-div">
+      <form method="POST" action=<%= "/listings/" + data._id + "/unavailable" + "?_method=PUT"%>>
+        <button type="submit" class="btn btn-primary" type="button" name="button">Unavailable</button>
+      </form>
+    </div>
+
+    <div class="button-div">
+      <form method="POST" action=<%= "/listings/" + data._id + "?_method=DELETE"%>>
+        <button type="submit" class="btn btn-danger">Delete</button>
+      </form>
+    </div>
+
   </div>
-
-  <div class="col-md-2">
-    <form method="POST" action=<%= "/listings/" + data._id + "/unavailable" + "?_method=PUT"%>>
-      <button type="submit" class="btn btn-primary" type="button" name="button">Unavailable</button>
-    </form>
-  </div>
-
-  <div class="col-md-2">
-    <form method="POST" action=<%= "/listings/" + data._id + "?_method=DELETE"%>>
-      <button type="submit" class="btn btn-danger">Delete</button>
-    </form>
-  </div>
-
 </div>
 
 <h3><%= offers %></h3>
 <% offeredTrades.forEach(function (trade) { %>
-    <div class="col-md-6 listing">
-      <a href=<%= "/trades/" + trade._id %>>View Trade</a>
-      <a href= <%= "/listings/" + trade.proposer_listing_id._id %> >
-        <h4 class="listingname"><%= trade.proposer_listing_id.name %></h4>
-      </a>
-      <h5 class="listingdescription"><%= trade.proposer_listing_id.description %></h5>
-      <p class="listingusername">Listed by: <%= trade.proposer_user_id.local.username %></p>
+  <div class="col-md-4">
+    <div class="panel panel-default">
+      <div class="panel-body">
+
+        <div class="col-md-9">
+          <a href= <%= "/listings/" + trade.proposer_listing_id._id %> >
+          <h4 class="listingname"><%= trade.proposer_listing_id.name %></h4>
+          </a>
+          <h5 class="listingdescription"><%= trade.proposer_listing_id.description %></h5>
+          <p class="listingusername">Listed by: <%= trade.proposer_user_id.local.username %></p>
+        </div>
+
+        <div class="col-md-3">
+          <a class="btn btn-primary view-trade" href=<%= "/trades/" + trade._id %>>View</a>
+        </div>
+
+      </div>
     </div>
+  </div>
 <% }) %>

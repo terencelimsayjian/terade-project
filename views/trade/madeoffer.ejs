@@ -1,7 +1,9 @@
-<% include ../partials/trade %>
+<div class="jumbotron">
+  <% include ../partials/trade %>
 
-<a class="btn btn-primary" href=<%= "/chats/mychats/" + thisChat._id %>>View Chat</a>
+  <a class="btn btn-primary" href=<%= "/chats/mychats/" + thisChat._id %>>View Chat</a>
 
-<form class="btn" method="POST" action=<%= "/trades/remove/" + thisTrade._id + "?_method=PUT" %>>
-  <button type="submit" class="btn btn-danger">Remove Offer</button>
-</form>
+  <form class="btn" method="POST" action=<%= "/trades/remove/" + thisTrade._id + "?_method=PUT" %>>
+    <button type="submit" class="btn btn-danger">Remove Offer</button>
+  </form>
+</div>

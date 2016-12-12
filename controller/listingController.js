@@ -3,15 +3,19 @@ var Trade = require('../models/trade')
 
 var listingController = {
   getListings: function (req, res) {
-    Listing.find({ availability: true })
-    .populate('user_id', 'local.username')
-    .exec(function (err, allListings) {
-      if (err) throw err
-      res.render('listing/index', {
-        data: allListings,
-        header: 'Available Books'
+    if (req.user) {
+      Listing.find({ availability: true })
+      .populate('user_id', 'local.username')
+      .exec(function (err, allListings) {
+        if (err) throw err
+        res.render('listing/index', {
+          data: allListings,
+          header: 'All Available Books'
+        })
       })
-    })
+    } else {
+      res.redirect('/login')
+    }
   },
 
   createListing: function (req, res) {
@@ -50,7 +54,7 @@ var listingController = {
     })
   },
 
-  getOneListing: function (req, res) {
+  getListing: function (req, res) {
     Listing.findOne({ _id: req.params.listingID })
       .populate('user_id', 'local.username')
       .exec(function (err, foundListing) {

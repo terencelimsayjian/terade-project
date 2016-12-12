@@ -1,15 +1,17 @@
-<% include ../partials/trade %>
+<div class="jumbotron">
+  <% include ../partials/trade %>
 
-<a class="btn btn-primary" href=<%= "/chats/mychats/" + thisChat._id %>>View Chat</a>
+  <a class="btn btn-primary" href=<%= "/chats/mychats/" + thisChat._id %>>View Chat</a>
 
-<form class="btn" method="POST" action=<%= "/trades/accept/" + thisTrade._id + "?_method=PUT"%>>
-  <button type="submit" class="btn btn-primary" type="button" name="button">Accept</button>
-</form>
+  <form class="btn" method="POST" action=<%= "/trades/accept/" + thisTrade._id + "?_method=PUT"%>>
+    <button type="submit" class="btn btn-primary" type="button" name="button">Accept</button>
+  </form>
 
-<form class="btn" method="POST" action=<%= "/trades/pending/" + thisTrade._id + "?_method=PUT" %>>
-  <button type="submit" class="btn btn-warning" type="button" name="button">Pending</button>
-</form>
+  <form class="btn" method="POST" action=<%= "/trades/pending/" + thisTrade._id + "?_method=PUT" %>>
+    <button type="submit" class="btn btn-warning" type="button" name="button">Pending</button>
+  </form>
 
-<form class="btn" method="POST" action=<%= "/trades/reject/" + thisTrade._id + "?_method=PUT" %>>
-  <button type="submit" class="btn btn-danger" type="button" name="button">Reject</button>
-</form>
+  <form class="btn" method="POST" action=<%= "/trades/reject/" + thisTrade._id + "?_method=PUT" %>>
+    <button type="submit" class="btn btn-danger" type="button" name="button">Reject</button>
+  </form>
+</div>

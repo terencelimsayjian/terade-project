@@ -1,40 +1,42 @@
 <h2><%= header %></h2>
 
   <% data.forEach(function (trade) { %>
-    <div class="col-md-12 trade-container">
-    <div class="row">
 
-        <div class="col-md-4 trade-listing">
+    <div class="well well-sm col-md-6">
+      <div class="row">
+
+        <div class="col-md-5 trade-listing">
           <div class="trade-sub-container">
             <a href= <%= "/listings/" + trade.proposer_listing_id._id %> >
-              <h4 class="listingname"><%= trade.proposer_listing_id.name %></h4>
+            <h4 class="listingname"><%= trade.proposer_listing_id.name %></h4>
             </a>
             <h5 class="listingdescription"><%= trade.proposer_listing_id.description %></h5>
 
             <p class="listingusername">Listed by:
-              <a href=<%= "/listings/userlistings/" + trade.proposer_user_id._id %>>
-              <%= trade.proposer_user_id.local.username %>
+            <a href=<%= "/listings/userlistings/" + trade.proposer_user_id._id %>>
+            <%= trade.proposer_user_id.local.username %>
             </a></p>
           </div>
         </div>
 
         <div class="col-md-4 trade-listing">
-          <a href= <%= "/listings/" + trade %> >
-            <h4 class="listingname"><%= trade.proposee_listing_id.name %></h4>
+          <a href= <%= "/listings/" + trade.proposee_listing_id._id %> >
+          <h4 class="listingname"><%= trade.proposee_listing_id.name %></h4>
           </a>
 
           <h5 class="listingdescription"><%= trade.proposee_listing_id.description %></h5>
 
           <p class="listingusername">Listed by:
           <a href=<%= "/listings/userlistings/" + trade.proposee_user_id._id %>>
-            <%= trade.proposee_user_id.local.username %>
-            </a></p>
+          <%= trade.proposee_user_id.local.username %>
+          </a></p>
         </div>
 
-        <div class="col-md-3 col-md-offset-1">
+        <div class="col-md-2">
           <a class="btn btn-primary view-trade" href=<%= "/trades/" + trade._id %>>View Trade</a>
         </div>
 
+      </div>
     </div>
-  </div>
+
   <% }) %>

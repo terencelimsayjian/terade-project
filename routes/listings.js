@@ -1,6 +1,5 @@
 var express = require('express')
 var router = express.Router()
-var Listing = require('../models/listing')
 var listingController = require('../controller/listingController')
 
 router.route('/')
@@ -9,14 +8,14 @@ router.route('/')
 
 router.get('/userlistings/:userID', listingController.getUserListings)
 
-router.get('/:listingID', listingController.getOneListing)
+router.route('/:listingID')
+      .get(listingController.getListing)
+      .delete(listingController.deleteListing)
 
 router.get('/:listingID/edit', listingController.editListing)
 
 router.put('/:listingID/available', listingController.makeListingAvail)
 
 router.put('/:listingID/unavailable', listingController.makeListingUnavail)
-
-router.delete('/:listingID', listingController.deleteListing)
 
 module.exports = router
