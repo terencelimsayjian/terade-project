@@ -20,6 +20,8 @@ form {
 
 .panel-body {
   padding: 5px 15px;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .panel-body h3 {
@@ -28,6 +30,18 @@ form {
 
 .view-trade {
   margin-top: 30px;
+}
+
+.new-listing {
+  margin-bottom: 30px;
+}
+
+.author-label {
+  margin-left: 20px;
+}
+
+.create-new-book-button {
+  margin-left: 20px;
 }
 
 .button-div {

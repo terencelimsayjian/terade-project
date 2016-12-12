@@ -1,11 +1,13 @@
-<h2>Profile</h2>
+<div class="jumbotron">
+  <h2>Profile</h2>
+</div>
 
 <% if(message.length > 0) { %>
   <div class="alert alert-danger">
-    <%= message %>
+  <%= message %>
   </div>
-<% } %>
+  <% } %>
 
-Username: <%= username %> <br>
-Name: <%= name %><br>
-Email: <%= email %><br>
+  Username: <%= username %> <br>
+  Name: <%= name %><br>
+  Email: <%= email %><br>
