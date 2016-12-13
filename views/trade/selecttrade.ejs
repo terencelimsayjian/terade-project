@@ -1,17 +1,27 @@
 <h2>My Listings</h2>
 
   <% data.forEach(function (listing) { %>
-      <div class="col-md-6 listing">
-        <p><%= listing.name %></p>
-        <p><%= listing.description %></p>
+    <div class="col-md-3">
+      <div class="panel panel-default">
 
-        <form class="btn" method="POST" action="/trades">
-          <input type="hidden" value=<%= listing._id %> name="proposerListingID" />
-          <input type="hidden" value=<%= userID %> name="proposeeUserID" />
-          <input type="hidden" value=<%= listingID %> name="proposeeListingID" />
-          <button type="submit" class="btn btn-primary offer-book">Offer Book</button>
-        </form>
+      <div class="panel-body">
+        <div class="col-md-9">
+          <h3><%= listing.name %></h3>
+          <h4><%= listing.description %></h4>
+        </div>
+
+        <div class="col-md-3">
+          <form class="btn view-trade" method="POST" action="/trades">
+            <input type="hidden" value=<%= listing._id %> name="proposerListingID" />
+            <input type="hidden" value=<%= userID %> name="proposeeUserID" />
+            <input type="hidden" value=<%= listingID %> name="proposeeListingID" />
+            <button type="submit" class="btn btn-primary offer-book">Offer</button>
+          </form>
+        </div>
+
+        </div>
       </div>
+    </div>
 
 
   <% }) %>
